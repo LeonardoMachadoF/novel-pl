@@ -1,9 +1,9 @@
-using backend.Entities;
+using backend.Entities.Dto;
 using FluentValidation;
 
 namespace backend.Validators;
 
-internal sealed class CreateNovelDtoValidator: AbstractValidator<NovelDTO>
+internal sealed class CreateNovelDtoValidator: AbstractValidator<NovelDto>
 {
     public CreateNovelDtoValidator()
     {
