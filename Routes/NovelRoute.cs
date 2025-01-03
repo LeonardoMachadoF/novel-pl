@@ -1,4 +1,5 @@
 using backend.Entities;
+using backend.Services.ErrorService;
 using backend.Services.NovelService;
 using FluentValidation;
 
@@ -15,16 +16,13 @@ public static class NovelRoute
                 var novel = await novelService.CreateNovel(novelDto);
                 return Results.Created($"/novel/{novel.Id}", novel);
             }
-            catch (ValidationException ex)
+            catch (ErrorCustomException ex)
             {
-                var errors = ex.Errors
-                        .GroupBy(e => e.PropertyName)
-                        .ToDictionary(
-                            g => g.Key,
-                            g => g.Select(e => e.ErrorMessage).ToArray()
-                        );
-
-                return Results.BadRequest(new { errors });
+                return Results.BadRequest(new {error = ex.Errors});
+            }
+            catch (Exception ex)
+            {
+                return Results.InternalServerError(new {error = ex.Message});
             }
         });
         

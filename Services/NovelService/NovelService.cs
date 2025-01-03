@@ -1,5 +1,6 @@
 using backend.Data.Repository;
 using backend.Entities;
+using backend.Services.ErrorService;
 using FluentValidation;
 
 namespace backend.Services.NovelService;
@@ -8,11 +9,13 @@ public class NovelService:INovelService
 {
     private readonly INovelRepository _novelRepository;
     private readonly IValidator<NovelDTO> _validatorNovelDto;
+    private readonly IErrorService _errorService;
 
-    public NovelService(INovelRepository novelRepository,IValidator<NovelDTO> validator)
+    public NovelService(INovelRepository novelRepository,IValidator<NovelDTO> validator, IErrorService errorService)
     {
         _novelRepository = novelRepository;
         _validatorNovelDto = validator;
+        _errorService = errorService;
     }
     
     public async Task<Novel> CreateNovel(NovelDTO novelDto)
@@ -20,7 +23,8 @@ public class NovelService:INovelService
         var  validationResult =  _validatorNovelDto.Validate(novelDto);
         if (!validationResult.IsValid)
         {
-            throw new ValidationException(validationResult.Errors);
+            var errors = _errorService.SanitazeError(validationResult.Errors);
+            throw new ErrorCustomException(errors);
         }
         var newNovel = new Novel
         {
