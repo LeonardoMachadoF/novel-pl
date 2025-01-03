@@ -148,3 +148,4 @@ C:\Users\apeju\OneDrive\Área de Trabalho\Projetos\NovelPL\backend\bin\Debug\net
 C:\Users\apeju\OneDrive\Área de Trabalho\Projetos\NovelPL\backend\bin\Debug\net9.0\runtimes\win-x86\native\e_sqlite3.dll
 C:\Users\apeju\OneDrive\Área de Trabalho\Projetos\NovelPL\backend\bin\Debug\net9.0\FluentValidation.dll
 C:\Users\apeju\OneDrive\Área de Trabalho\Projetos\NovelPL\backend\bin\Debug\net9.0\FluentValidation.DependencyInjectionExtensions.dll
+C:\Users\apeju\OneDrive\Área de Trabalho\Projetos\NovelPL\backend\obj\Debug\net9.0\backend.sourcelink.json

@@ -4,6 +4,6 @@ namespace backend.Services.NovelService;
 
 public interface INovelService
 { 
-    Task<Novel> CreateNovel(NovelDTO novel);
+    Task<Novel> CreateNovel(NovelDTO novelDto);
     Task<List<Novel>> GetNovels();
 }
