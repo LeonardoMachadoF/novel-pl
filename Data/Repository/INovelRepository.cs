@@ -11,7 +11,7 @@ public interface INovelRepository
     
     Task<Novel?> GetNovelById(Guid id);
     
-    Task<Novel> UpdateNovel(Novel novel, NovelUpdateDto novelUpdateDto);
+    Task<Novel> UpdateNovel(Novel novel, UpdateNovelDto updateNovelDto);
     
     Task DeleteNovel(Novel novel);
 }

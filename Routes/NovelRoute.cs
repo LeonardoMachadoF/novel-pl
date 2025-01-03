@@ -10,7 +10,7 @@ public static class NovelRoute
 {
     public static void NovelRoutes(this WebApplication app)
     {
-        app.MapPost("/novel", async (NovelDto novelDto, INovelService novelService) =>
+        app.MapPost("/novel", async (CreateNovelDto novelDto, INovelService novelService) =>
         {
             try
             {
@@ -47,13 +47,17 @@ public static class NovelRoute
                 var novels = await novelService.GetNovels(take, skip);
                 return Results.Ok(novels);
             }
+            catch (ErrorCustomException ex)
+            {
+                return Results.BadRequest(new {error = ex.Errors});
+            }
             catch (Exception ex)
             {
                 return Results.NotFound(new {error = "Não foi possivel encontrar"});
             }
         });
 
-        app.MapPut("/novel/{id}", async (Guid id,INovelService novelService,NovelUpdateDto novelUpdateDto) =>
+        app.MapPut("/novel/{id}", async (Guid id,INovelService novelService,UpdateNovelDto novelUpdateDto) =>
         {
             try
             {

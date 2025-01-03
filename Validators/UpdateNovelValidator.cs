@@ -3,9 +3,9 @@ using FluentValidation;
 
 namespace backend.Validators;
 
-internal sealed class UpdateNovelDtoValidator:AbstractValidator<NovelUpdateDto>
+internal sealed class UpdateNovelValidator:AbstractValidator<UpdateNovelDto>
 {
-    public UpdateNovelDtoValidator()
+    public UpdateNovelValidator()
     {
         RuleFor(x => x.Title)
             .MinimumLength(2).WithMessage("Title must be at least 2 characters long.")

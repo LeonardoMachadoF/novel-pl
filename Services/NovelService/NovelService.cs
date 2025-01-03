@@ -2,6 +2,8 @@ using backend.Data.Repository;
 using backend.Entities;
 using backend.Entities.Dto;
 using backend.Services.ErrorService;
+using backend.Services.ValidationService;
+using backend.Validators;
 using FluentValidation;
 
 namespace backend.Services.NovelService;
@@ -9,30 +11,21 @@ namespace backend.Services.NovelService;
 public class NovelService:INovelService
 {
     private readonly INovelRepository _novelRepository;
-    private readonly IValidator<NovelDto> _validatorCreateNovelDto;
-    private readonly IErrorService _errorService;
-    private readonly IValidator<NovelUpdateDto> _validatorUpdateNovelDto;
+    private readonly INovelValidationService _validationService;
 
-    public NovelService(INovelRepository novelRepository,IValidator<NovelDto> validatorCreateNovel, IErrorService errorService, IValidator<NovelUpdateDto> validatorUpdateNovelDto)
+    public NovelService(INovelRepository novelRepository, INovelValidationService validationService)
     {
         _novelRepository = novelRepository;
-        _validatorCreateNovelDto = validatorCreateNovel;
-        _validatorUpdateNovelDto = validatorUpdateNovelDto;
-        _errorService = errorService;
+        _validationService = validationService;
     }
     
-    public async Task<Novel> CreateNovel(NovelDto novelDto)
+    public async Task<Novel> CreateNovel(CreateNovelDto createNovelDto)
     {
-        var  validationResult =  _validatorCreateNovelDto.Validate(novelDto);
-        if (!validationResult.IsValid)
-        {
-            var errors = _errorService.SanitazeError(validationResult.Errors);
-            throw new ErrorCustomException(errors);
-        }
+        _validationService.ValidateCreate(createNovelDto);
         var newNovel = new Novel
         {
-            Title = novelDto.Title,
-            Description = novelDto.Description
+            Title = createNovelDto.Title,
+            Description = createNovelDto.Description
         };
         await _novelRepository.Add(newNovel);
         return newNovel;
@@ -40,10 +33,7 @@ public class NovelService:INovelService
 
     public async Task<List<Novel>> GetNovels(int take, int skip)
     {
-        if (take <= 0 || skip < 0)
-        {
-            throw new ArgumentException("Parâmetros 'take' e 'skip' devem ser positivos.");
-        }
+        _validationService.ValidadePagination(new Pagination(take, skip));
         var novels = await _novelRepository.GetNovels(take, skip);
         return novels;
     }
@@ -58,22 +48,15 @@ public class NovelService:INovelService
         return novel;
     }
 
-    public async Task<Novel> UpdateNovel(Guid id, NovelUpdateDto novelUpdateDto)
+    public async Task<Novel> UpdateNovel(Guid id, UpdateNovelDto updateNovelDto)
     {
-        var  validationResult =  _validatorUpdateNovelDto.Validate(novelUpdateDto);
-        if (!validationResult.IsValid)
-        {
-            var errors = _errorService.SanitazeError(validationResult.Errors);
-            throw new ErrorCustomException(errors);
-        }
+        _validationService.ValidadeUpdate(updateNovelDto);
         
         var existentNovel = await _novelRepository.GetNovelById(id);
         if (existentNovel == null)
-        {
             throw new Exception("Novel não encontrada");
-        }
-
-        return await _novelRepository.UpdateNovel(existentNovel, novelUpdateDto);
+        
+        return await _novelRepository.UpdateNovel(existentNovel, updateNovelDto);
     }
 
     public async Task DeleteNovel(Guid id)

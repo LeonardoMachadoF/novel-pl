@@ -3,6 +3,7 @@ using backend.Data.Repository;
 using backend.Routes;
 using backend.Services.ErrorService;
 using backend.Services.NovelService;
+using backend.Services.ValidationService;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,7 +20,9 @@ builder.Services.AddDbContext<DataContext>(opts =>
 
 builder.Services.AddScoped<INovelService, NovelService>();
 builder.Services.AddScoped<INovelRepository, NovelRepository>();
+builder.Services.AddScoped<INovelValidationService, NovelValidationService>();
 builder.Services.AddSingleton<IErrorService, ErrorService>();
+
 
 var app = builder.Build();
 

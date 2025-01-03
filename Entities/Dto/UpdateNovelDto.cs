@@ -1,6 +1,6 @@
 namespace backend.Entities.Dto;
 
-public class NovelUpdateDto
+public class UpdateNovelDto
 {
     public string Title { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;

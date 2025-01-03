@@ -3,9 +3,9 @@ using FluentValidation;
 
 namespace backend.Validators;
 
-internal sealed class CreateNovelDtoValidator: AbstractValidator<NovelDto>
+internal sealed class CreateNovelValidator: AbstractValidator<CreateNovelDto>
 {
-    public CreateNovelDtoValidator()
+    public CreateNovelValidator()
     {
         RuleFor(x => x.Title)
             .NotEmpty().WithMessage("Title is required.")

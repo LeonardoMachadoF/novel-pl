@@ -30,13 +30,13 @@ public class NovelRepository:INovelRepository
         return novel;
     }
 
-    public async Task<Novel> UpdateNovel(Novel existentNovel, NovelUpdateDto novelUpdateDto)
+    public async Task<Novel> UpdateNovel(Novel existentNovel, UpdateNovelDto updateNovelDto)
     {
-        var properties = novelUpdateDto.GetType().GetProperties();
+        var properties = updateNovelDto.GetType().GetProperties();
     
         foreach (var property in properties)
         {
-            var value = property.GetValue(novelUpdateDto);
+            var value = property.GetValue(updateNovelDto);
             
             if (value != null && !(value is string str && str == ""))
             {
