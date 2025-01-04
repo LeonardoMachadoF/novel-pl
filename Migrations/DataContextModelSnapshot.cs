@@ -33,7 +33,7 @@ namespace backend.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Novels");
+                    b.ToTable("Novels", (string)null);
                 });
 #pragma warning restore 612, 618
         }

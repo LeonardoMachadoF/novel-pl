@@ -15,7 +15,7 @@ builder.Services.AddOpenApi();
 
 builder.Services.AddDbContext<DataContext>(opts =>
 {
-    opts.UseSqlite("Data Source=noveldb.sqlite");
+    opts.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
 builder.Services.AddScoped<INovelService, NovelService>();

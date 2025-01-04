@@ -38,7 +38,7 @@ public class NovelRepository:INovelRepository
         {
             var value = property.GetValue(updateNovelDto);
             
-            if (value != null && !(value is string str && str == ""))
+            if (StringIsNotNullNorEmpty(value))
             {
                 _context.Entry(existentNovel).Property(property.Name).CurrentValue = value;
             }
@@ -53,5 +53,10 @@ public class NovelRepository:INovelRepository
     {
         _context.Novels.Remove(novel);
         return _context.SaveChangesAsync();
+    }
+
+    private bool StringIsNotNullNorEmpty(object? value)
+    {
+        return (value != null && !(value is string str && str == ""));
     }
 }
