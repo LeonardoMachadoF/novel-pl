@@ -58,7 +58,19 @@ public class NovelService:INovelService
         if (existentNovel == null)
             throw new Exception("Novel não encontrada");
         
-        return await _novelRepository.UpdateNovel(existentNovel, updateNovelDto);
+        var properties = updateNovelDto.GetType().GetProperties();
+
+        foreach (var property in properties)
+        {
+            var valueFromDto = property.GetValue(updateNovelDto);
+            var targetProperty = existentNovel.GetType().GetProperty(property.Name);
+            
+            if (!StringIsNotNullNorEmpty(valueFromDto) || targetProperty == null) continue;
+            
+            targetProperty.SetValue(existentNovel, valueFromDto);
+        }
+        
+        return await _novelRepository.UpdateNovel(existentNovel);
     }
 
     public async Task DeleteNovel(Guid id)
@@ -68,6 +80,12 @@ public class NovelService:INovelService
             throw new Exception("Novel não encontrada");
         
         await _novelRepository.DeleteNovel(novel);
+    }
+    
+    
+    private bool StringIsNotNullNorEmpty(object? value)
+    {
+        return (value != null && !(value is string str && str == ""));
     }
 }
 

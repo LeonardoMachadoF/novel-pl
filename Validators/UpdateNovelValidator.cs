@@ -1,3 +1,4 @@
+using backend.Data.Enums;
 using backend.Entities.Dto;
 using FluentValidation;
 
@@ -22,7 +23,8 @@ internal sealed class UpdateNovelValidator:AbstractValidator<UpdateNovelDto>
             .WithMessage("Invalid Image URL format.");
         
         RuleFor(x=>x)
-            .Must(x => !string.IsNullOrEmpty(x.Title) || !string.IsNullOrEmpty(x.Description) || !string.IsNullOrEmpty(x.ImageUrl))
+            .Must(x => !string.IsNullOrEmpty(x.Title) || !string.IsNullOrEmpty(x.Description) || !string.IsNullOrEmpty(x.ImageUrl) || Enum.IsDefined(typeof(NovelOriginalLanguage), x.OriginalLanguage))
             .WithMessage("Pelo menos um dos campos deve estar preenchido.");
+
     }
 }

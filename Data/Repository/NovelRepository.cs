@@ -30,22 +30,10 @@ public class NovelRepository:INovelRepository
         return novel;
     }
 
-    public async Task<Novel> UpdateNovel(Novel existentNovel, UpdateNovelDto updateNovelDto)
+    public async Task<Novel> UpdateNovel(Novel existentNovel)
     {
-        var properties = updateNovelDto.GetType().GetProperties();
-    
-        foreach (var property in properties)
-        {
-            var value = property.GetValue(updateNovelDto);
-            
-            if (StringIsNotNullNorEmpty(value))
-            {
-                _context.Entry(existentNovel).Property(property.Name).CurrentValue = value;
-            }
-        }
-        
+        _context.Entry(existentNovel).State = EntityState.Modified;
         await _context.SaveChangesAsync();
-        
         return existentNovel;
     }
 
@@ -53,10 +41,5 @@ public class NovelRepository:INovelRepository
     {
         _context.Novels.Remove(novel);
         return _context.SaveChangesAsync();
-    }
-
-    private bool StringIsNotNullNorEmpty(object? value)
-    {
-        return (value != null && !(value is string str && str == ""));
     }
 }
