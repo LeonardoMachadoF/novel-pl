@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using backend.Data;
 
@@ -10,9 +11,11 @@ using backend.Data;
 namespace backend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20250105013835_NovelCapVolRelationsV2")]
+    partial class NovelCapVolRelationsV2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.0");
@@ -62,7 +65,7 @@ namespace backend.Migrations
 
                     b.HasIndex("NovelId");
 
-                    b.ToTable("Chapters");
+                    b.ToTable("Chapter");
                 });
 
             modelBuilder.Entity("backend.Entities.Genre", b =>
@@ -89,7 +92,7 @@ namespace backend.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Genres");
+                    b.ToTable("Genre");
                 });
 
             modelBuilder.Entity("backend.Entities.Novel", b =>
@@ -103,7 +106,6 @@ namespace backend.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("CoverImageUrl")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Description")
@@ -111,7 +113,6 @@ namespace backend.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ImageUrl")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("LastUpdate")

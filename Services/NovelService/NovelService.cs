@@ -22,12 +22,14 @@ public class NovelService:INovelService
     public async Task<Novel> CreateNovel(CreateNovelDto createNovelDto)
     {
         _validationService.ValidateCreate(createNovelDto);
-        var newNovel = new Novel
-        {
-            Title = createNovelDto.Title,
-            Description = createNovelDto.Description
-        };
+        var newNovel = new Novel(
+            createNovelDto.Title,
+            createNovelDto.Description,
+            createNovelDto.OriginalLanguage,
+            createNovelDto.ImageUrl
+            );
         await _novelRepository.Add(newNovel);
+        
         return newNovel;
     }
 

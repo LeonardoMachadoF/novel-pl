@@ -14,7 +14,7 @@ public class NovelRepository:INovelRepository
     
     public async Task Add(Novel novel)
     {
-        _context.Novels.Add(novel);
+        var newNovel = _context.Novels.Add(novel);
         await _context.SaveChangesAsync();
     }
 
