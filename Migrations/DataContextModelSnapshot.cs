@@ -17,19 +17,19 @@ namespace backend.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.0");
 
-            modelBuilder.Entity("GenreNovel", b =>
+            modelBuilder.Entity("NovelGenre", b =>
                 {
-                    b.Property<Guid>("GenresId")
+                    b.Property<Guid>("GenreId")
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid>("NovelsId")
+                    b.Property<Guid>("NovelId")
                         .HasColumnType("TEXT");
 
-                    b.HasKey("GenresId", "NovelsId");
+                    b.HasKey("GenreId", "NovelId");
 
-                    b.HasIndex("NovelsId");
+                    b.HasIndex("NovelId");
 
-                    b.ToTable("GenreNovel");
+                    b.ToTable("NovelGenre");
                 });
 
             modelBuilder.Entity("backend.Entities.Chapter", b =>
@@ -84,6 +84,13 @@ namespace backend.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.PrimitiveCollection<string>("NovelIds")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Slug")
+                        .HasColumnType("TEXT");
+
                     b.Property<int>("ViewCount")
                         .HasColumnType("INTEGER");
 
@@ -126,6 +133,10 @@ namespace backend.Migrations
                     b.Property<double>("Rating")
                         .HasColumnType("REAL");
 
+                    b.Property<string>("Slug")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<int>("Status")
                         .HasColumnType("INTEGER");
 
@@ -141,17 +152,17 @@ namespace backend.Migrations
                     b.ToTable("Novels");
                 });
 
-            modelBuilder.Entity("GenreNovel", b =>
+            modelBuilder.Entity("NovelGenre", b =>
                 {
                     b.HasOne("backend.Entities.Genre", null)
                         .WithMany()
-                        .HasForeignKey("GenresId")
+                        .HasForeignKey("GenreId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("backend.Entities.Novel", null)
                         .WithMany()
-                        .HasForeignKey("NovelsId")
+                        .HasForeignKey("NovelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

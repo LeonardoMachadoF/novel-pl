@@ -26,7 +26,18 @@ public class NovelRepository:INovelRepository
 
     public async Task<Novel?> GetNovelById(Guid novelId)
     {
-        var novel = await _context.Novels.FirstOrDefaultAsync(novel=>novel.Id==novelId);
+        var novel = await _context.Novels.Include(x=>x.Chapters).Include(x=>x.Genres).FirstOrDefaultAsync(novel=>novel.Id==novelId);
+        return novel;
+    }
+
+    public async Task<Novel> GetNovelBySlug(string slug)
+    {
+        var novel = await _context.Novels
+            .Include(x => x.Chapters)
+            .Include(x => x.Genres)
+            .FirstOrDefaultAsync(x=>x.Slug == slug);
+        
+        
         return novel;
     }
 

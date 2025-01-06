@@ -1,4 +1,7 @@
+using System.Globalization;
+using System.Text;
 using System.Text.Json.Serialization;
+using System.Text.RegularExpressions;
 
 namespace backend.Entities;
 
@@ -11,7 +14,7 @@ public class Chapter
         Number = number;
         Volume = volume;
         Content = content;
-        
+
         ReleaseDate = DateTime.Now;
     }
     public Guid Id { get; set; } 

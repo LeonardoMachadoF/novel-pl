@@ -14,4 +14,6 @@ public interface INovelRepository
     Task UpdateNovel(Novel novel);
     
     Task DeleteNovel(Novel novel);
+    
+    Task<Novel> GetNovelBySlug(string slug);
 }

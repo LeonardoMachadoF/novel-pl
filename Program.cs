@@ -1,6 +1,7 @@
 using backend.Data;
 using backend.Data.Repository;
 using backend.Routes;
+using backend.Services.ChapterDomain;
 using backend.Services.ErrorService;
 using backend.Services.NovelService;
 using backend.Services.ValidationService;
@@ -18,9 +19,12 @@ builder.Services.AddDbContext<DataContext>(opts =>
     opts.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
-builder.Services.AddScoped<INovelService, NovelService>();
+builder.Services.AddNovelUseCases();
+builder.Services.AddChapterUseCases();
 builder.Services.AddScoped<INovelRepository, NovelRepository>();
+builder.Services.AddScoped<IChapterRepository, ChapterRepository>();
 builder.Services.AddScoped<INovelValidationService, NovelValidationService>();
+builder.Services.AddScoped<IChapterValidationService, ChapterValidationService>();
 builder.Services.AddSingleton<IErrorService, ErrorService>();
 
 
@@ -42,5 +46,6 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.NovelRoutes();
+app.ChapterRoutes();
 
 app.Run();

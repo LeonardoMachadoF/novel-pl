@@ -17,10 +17,12 @@ public class Novel
         Genres = new List<Genre>(); 
         Chapters = new List<Chapter>();
         Author = new List<string>();
+        Slug = Utils.Slug.Generate(title);
     }
 
     public Guid Id { get; init; }
     public string Title { get; set; }
+    public string Slug { get; set; }
     public string Description { get; set; }
     public NovelOriginalLanguage OriginalLanguage { get; set; }
     public string ImageUrl { get; set; } = "default.jpg";

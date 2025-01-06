@@ -1,7 +1,12 @@
 using backend.Entities;
 using backend.Entities.Dto;
 using backend.Services.ErrorService;
+using backend.Services.NovelDomain.UseCases.GetNovelById;
 using backend.Services.NovelService;
+using backend.Services.NovelServices.UseCases.CreateNovel;
+using backend.Services.NovelServices.UseCases.DeleteNovel;
+using backend.Services.NovelServices.UseCases.GetNovels;
+using backend.Services.NovelServices.UseCases.UpdateNovel;
 using FluentValidation;
 
 namespace backend.Routes;
@@ -10,11 +15,11 @@ public static class NovelRoute
 {
     public static void NovelRoutes(this WebApplication app)
     {
-        app.MapPost("/novel", async (CreateNovelDto novelDto, INovelService novelService) =>
+        app.MapPost("/novel", async (CreateNovelDto novelDto, ICreateNovelUseCase createNovelUseCase) =>
         {
             try
             {
-                var novel = await novelService.CreateNovel(novelDto);
+                var novel = await createNovelUseCase.Execute(novelDto);
                 return Results.Created($"/novel/{novel.Id}", novel);
             }
             catch (ErrorCustomException ex)
@@ -27,12 +32,33 @@ public static class NovelRoute
             }
         });
         
-        app.MapGet("/novel/{id}", async (INovelService novelService, Guid id) =>
+        // app.MapGet("/novel/{id}", async (IGetNovelByIdUseCase getNovelByIdUseCase, Guid id) =>
+        // {
+        //     try
+        //     {
+        //         var novels = await getNovelByIdUseCase.Execute(id);
+        //         return Results.Ok(novels);
+        //     }
+        //     catch (Exception ex)
+        //     {
+        //         return Results.NotFound(new {error = ex.Message});
+        //     }
+        // });
+        
+        app.MapGet("/novel/{slug}", async (IGetNovelUseCase getNovel, string slug) =>
         {
             try
             {
-                var novels = await novelService.GetNovelById(id);
-                return Results.Ok(novels);
+                if (Guid.TryParse(slug, out Guid novelId))
+                {
+                    var novel = await getNovel.Execute(novelId);
+                    return Results.Ok(novel);
+                }
+                else
+                {
+                    var novel = await getNovel.Execute(slug);
+                    return Results.Ok(novel);
+                }
             }
             catch (Exception ex)
             {
@@ -40,11 +66,11 @@ public static class NovelRoute
             }
         });
 
-        app.MapGet("/novel", async (INovelService novelService, int take = 5, int skip = 0) =>
+        app.MapGet("/novel", async (IGetNovelsUseCase getNovelsUseCase, int take = 5, int skip = 0) =>
         {
             try
             {
-                var novels = await novelService.GetNovels(take, skip);
+                var novels = await getNovelsUseCase.Execute(take, skip);
                 return Results.Ok(novels);
             }
             catch (ErrorCustomException ex)
@@ -57,11 +83,11 @@ public static class NovelRoute
             }
         });
 
-        app.MapPut("/novel/{id}", async (Guid id,INovelService novelService,UpdateNovelDto novelUpdateDto) =>
+        app.MapPut("/novel/{id}", async (Guid id,IUpdateNovelUseCase updateNovelUseCase,UpdateNovelDto novelUpdateDto) =>
         {
             try
             {
-                var novel = await novelService.UpdateNovel(id, novelUpdateDto);
+                var novel = await updateNovelUseCase.Execute(id, novelUpdateDto);
                 return Results.Ok(novel);
             }
             catch (ErrorCustomException ex)
@@ -74,11 +100,11 @@ public static class NovelRoute
             }
         });
 
-        app.MapDelete("/novel/{id}", async (Guid id, INovelService novelService) =>
+        app.MapDelete("/novel/{id}", async (Guid id, IDeleteNovelUseCase deleteNovelUseCase) =>
         {
             try
             {
-                await novelService.DeleteNovel(id);
+                await deleteNovelUseCase.Execute(id);
                 return Results.Ok();
             }
             catch (ErrorCustomException ex)
