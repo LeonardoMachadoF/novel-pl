@@ -30,11 +30,10 @@ public class NovelRepository:INovelRepository
         return novel;
     }
 
-    public async Task<Novel> UpdateNovel(Novel existentNovel)
+    public async Task UpdateNovel(Novel existentNovel)
     {
         _context.Entry(existentNovel).State = EntityState.Modified;
         await _context.SaveChangesAsync();
-        return existentNovel;
     }
 
     public Task DeleteNovel(Novel novel)

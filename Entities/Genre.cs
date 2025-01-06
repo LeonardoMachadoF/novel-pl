@@ -17,5 +17,6 @@ public class Genre
     public int LikeCount { get; set; } = 0;
     public DateTime CreatedDate { get; set; }
     
+    public List<Guid> NovelIds { get; set; }
     public List<Novel> Novels { get; set; }
 }

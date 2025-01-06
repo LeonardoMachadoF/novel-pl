@@ -58,9 +58,9 @@ public class NovelService:INovelService
         if (existentNovel == null)
             throw new Exception("Novel não encontrada");
         
-        var properties = updateNovelDto.GetType().GetProperties();
+        var novelDtoProperties = updateNovelDto.GetType().GetProperties();
 
-        foreach (var property in properties)
+        foreach (var property in novelDtoProperties)
         {
             var valueFromDto = property.GetValue(updateNovelDto);
             var targetProperty = existentNovel.GetType().GetProperty(property.Name);
@@ -70,7 +70,8 @@ public class NovelService:INovelService
             targetProperty.SetValue(existentNovel, valueFromDto);
         }
         
-        return await _novelRepository.UpdateNovel(existentNovel);
+        await _novelRepository.UpdateNovel(existentNovel);
+        return existentNovel;
     }
 
     public async Task DeleteNovel(Guid id)

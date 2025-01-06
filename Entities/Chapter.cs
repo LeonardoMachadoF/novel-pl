@@ -22,4 +22,5 @@ public class Chapter
     public DateTime ReleaseDate { get; set; }
     [JsonIgnore]
     public Novel Novel { get; set; }
+    public Guid NovelId { get; set; }
 }
