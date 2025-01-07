@@ -24,7 +24,7 @@ public static class AuthRoute
             }
             catch (Exception ex)
             {
-                return Results.InternalServerError(new {error = ex.Message});
+                return Results.BadRequest(new {error = ex.Message});
             }
         });
 
