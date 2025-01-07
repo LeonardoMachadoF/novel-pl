@@ -25,7 +25,6 @@ internal sealed class CreateChapterValidator:AbstractValidator<CreateChapterDto>
             .When(x=>x.NovelSlug.Length > 0);
         
         RuleFor(x => x.NovelSlug)
-            .Must((x, novelSlug) => !string.IsNullOrEmpty(novelSlug) || x.NovelId.ToString().Length > 6)
-            .WithMessage("NovelSlug is required when NovelId is not provided.");
+            .NotEmpty().WithMessage("NovelSlug is required is not provided.");
     }
 }

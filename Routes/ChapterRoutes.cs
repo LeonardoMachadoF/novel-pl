@@ -14,12 +14,13 @@ namespace backend.Routes;
 
 public static class ChapterRoute
 {
-    public static void ChapterRoutes(this WebApplication app)
+    public static RouteGroupBuilder ChapterRoutes(this RouteGroupBuilder group)
     {
-        app.MapPost("/chapter", async (CreateChapterDto chapterDto, ICreateChapterUseCase createChapterUseCase) =>
+        group.MapPost("/", async (string slug, CreateChapterDto chapterDto, ICreateChapterUseCase createChapterUseCase) =>
         {
             try
             {
+                chapterDto.NovelSlug = slug;
                 var chapter = await createChapterUseCase.Execute(chapterDto);
                 return Results.Created($"/chapter/{chapter.Id}", chapter);
             }
@@ -33,7 +34,7 @@ public static class ChapterRoute
             }
         });
         
-        app.MapGet("/chapter/{id:guid}", async (IGetChapterByIdUseCase getChapter, Guid id) =>
+        group.MapGet("/{id:guid}", async (IGetChapterByIdUseCase getChapter, Guid id) =>
         {
             try
             {
@@ -50,7 +51,7 @@ public static class ChapterRoute
             }
         });
 
-        app.MapPut("/chapter/{id}", async (IUpdateChapterUseCase updateChapterUseCase, UpdateChapterDto chapterDto, Guid id) =>
+        group.MapPut("/{id}", async (IUpdateChapterUseCase updateChapterUseCase, UpdateChapterDto chapterDto, Guid id) =>
         {
             try
             {
@@ -68,7 +69,7 @@ public static class ChapterRoute
             }
         });
 
-        app.MapDelete("/chapter/{id}", async (IDeleteChapterUseCase deleteChapterUseCase, Guid id) =>
+        group.MapDelete("/{id}", async (IDeleteChapterUseCase deleteChapterUseCase, Guid id) =>
         {
             try
             {
@@ -85,5 +86,7 @@ public static class ChapterRoute
                 return Results.NotFound(new {error = ex.Message});
             }
         });
+        
+        return group;
     }
 }

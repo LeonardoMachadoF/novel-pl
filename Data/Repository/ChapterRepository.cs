@@ -6,11 +6,12 @@ namespace backend.Data.Repository;
 public class ChapterRepository : IChapterRepository
 {
     private readonly DataContext _context;
+
     public ChapterRepository(DataContext context)
     {
         _context = context;
     }
-    
+
     public async Task Add(Chapter chapter)
     {
         _context.Chapters.Add(chapter);
@@ -24,8 +25,9 @@ public class ChapterRepository : IChapterRepository
 
     public async Task<Chapter?> GetChapterById(Guid id)
     {
-        var chapter = await _context.Chapters.FirstOrDefaultAsync(x=>x.Id == id);
-        return chapter;;
+        var chapter = await _context.Chapters.FirstOrDefaultAsync(x => x.Id == id);
+        return chapter;
+        ;
     }
 
     public async Task UpdateChapter(Chapter chapter)
@@ -39,5 +41,4 @@ public class ChapterRepository : IChapterRepository
         _context.Chapters.Remove(novel);
         await _context.SaveChangesAsync();
     }
-    
 }

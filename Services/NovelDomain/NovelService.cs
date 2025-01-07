@@ -1,3 +1,4 @@
+using backend.Services.NovelDomain.UseCases.GetNovel;
 using backend.Services.NovelDomain.UseCases.GetNovelById;
 using backend.Services.NovelServices.UseCases.CreateNovel;
 using backend.Services.NovelServices.UseCases.DeleteNovel;

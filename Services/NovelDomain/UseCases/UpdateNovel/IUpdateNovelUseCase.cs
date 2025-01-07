@@ -5,5 +5,5 @@ namespace backend.Services.NovelServices.UseCases.UpdateNovel;
 
 public interface IUpdateNovelUseCase
 {
-    Task<Novel> Execute(Guid id,UpdateNovelDto updateNovelDto);
+    Task<Novel> Execute(string slug,UpdateNovelDto updateNovelDto);
 }

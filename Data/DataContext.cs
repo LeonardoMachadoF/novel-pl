@@ -32,5 +32,9 @@ public class DataContext: DbContext
             .HasOne(c => c.Novel)
             .WithMany(n => n.Chapters)
             .HasForeignKey(c => c.NovelId);
+        
+        modelBuilder.Entity<Novel>()
+            .HasIndex(n=>n.Slug)
+            .IsUnique();
     }
 }

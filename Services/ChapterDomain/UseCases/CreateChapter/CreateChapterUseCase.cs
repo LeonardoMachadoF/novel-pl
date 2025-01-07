@@ -23,19 +23,8 @@ public class CreateChapterUseCase:ICreateChapterUseCase
     public async Task<Chapter> Execute(CreateChapterDto createChapterDto)
     {
         _validationService.ValidateCreate(createChapterDto);
+        var novel = await _getNovelUseCase.Execute(createChapterDto.NovelSlug);
         
-        Novel? novel = null;
-        if (Guid.TryParse(createChapterDto.NovelId.ToString(), out Guid novelId))
-        {
-            novel = await _getNovelUseCase.Execute(novelId);
-        }
-        else
-        {
-            novel = await _getNovelUseCase.Execute(createChapterDto.NovelSlug);
-        }
-        
-
-
         if (novel is null)
         {
             throw new Exception("Novel não encontrada2");

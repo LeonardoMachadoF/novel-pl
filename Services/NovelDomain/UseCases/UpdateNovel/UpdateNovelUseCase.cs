@@ -16,11 +16,11 @@ public class UpdateNovelUseCase: IUpdateNovelUseCase
         _validationService = validationService;
     }
     
-    public async Task<Novel> Execute(Guid id, UpdateNovelDto updateNovelDto)
+    public async Task<Novel> Execute(string slug, UpdateNovelDto updateNovelDto)
     {
         _validationService.ValidadeUpdate(updateNovelDto);
         
-        var existentNovel = await _novelRepository.GetNovelById(id);
+        var existentNovel = await _novelRepository.GetNovelBySlug(slug);
         if (existentNovel == null)
             throw new Exception("Novel não encontrada");
         

@@ -45,7 +45,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.NovelRoutes();
-app.ChapterRoutes();
+app.MapGroup("/novel").NovelRoutes().WithTags("Novel");
+app.MapGroup("/{slug}/chapter").ChapterRoutes().WithTags("Chapter");
 
 app.Run();

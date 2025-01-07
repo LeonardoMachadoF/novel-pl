@@ -4,14 +4,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace backend.Data.Repository;
 
-public class NovelRepository:INovelRepository
+public class NovelRepository : INovelRepository
 {
     private readonly DataContext _context;
+
     public NovelRepository(DataContext context)
     {
         _context = context;
     }
-    
+
     public async Task Add(Novel novel)
     {
         var newNovel = _context.Novels.Add(novel);
@@ -26,20 +27,28 @@ public class NovelRepository:INovelRepository
 
     public async Task<Novel?> GetNovelById(Guid novelId)
     {
-        var novel = await _context.Novels.Include(x=>x.Chapters).Include(x=>x.Genres).FirstOrDefaultAsync(novel=>novel.Id==novelId);
+        var novel = await _context.Novels.Include(x => x.Chapters).Include(x => x.Genres)
+            .FirstOrDefaultAsync(novel => novel.Id == novelId);
         return novel;
     }
 
     public async Task<Novel> GetNovelBySlug(string slug)
     {
         var novel = await _context.Novels
-            .Include(x => x.Chapters)
-            .Include(x => x.Genres)
-            .FirstOrDefaultAsync(x=>x.Slug == slug);
-        
+            .FirstOrDefaultAsync(x => x.Slug == slug);
         
         return novel;
     }
+
+    public async Task<Novel?> GetNovelBySlugWithChapters(string slug)
+    {
+        var novel = await _context.Novels
+            .Include(x => x.Chapters)
+            .Include(x => x.Genres)
+            .FirstOrDefaultAsync(x => x.Slug == slug);
+        
+        return novel;
+    } 
 
     public async Task UpdateNovel(Novel existentNovel)
     {

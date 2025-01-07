@@ -13,9 +13,9 @@ namespace backend.Routes;
 
 public static class NovelRoute
 {
-    public static void NovelRoutes(this WebApplication app)
+    public static RouteGroupBuilder NovelRoutes(this RouteGroupBuilder group)
     {
-        app.MapPost("/novel", async (CreateNovelDto novelDto, ICreateNovelUseCase createNovelUseCase) =>
+        group.MapPost("/", async (CreateNovelDto novelDto, ICreateNovelUseCase createNovelUseCase) =>
         {
             try
             {
@@ -32,7 +32,7 @@ public static class NovelRoute
             }
         });
         
-        // app.MapGet("/novel/{id}", async (IGetNovelByIdUseCase getNovelByIdUseCase, Guid id) =>
+        // group.MapGet("/{id}", async (IGetNovelByIdUseCase getNovelByIdUseCase, Guid id) =>
         // {
         //     try
         //     {
@@ -45,7 +45,7 @@ public static class NovelRoute
         //     }
         // });
         
-        app.MapGet("/novel/{slug}", async (IGetNovelUseCase getNovel, string slug) =>
+        group.MapGet("/{slug}", async (IGetNovelUseCase getNovel, string slug) =>
         {
             try
             {
@@ -66,7 +66,7 @@ public static class NovelRoute
             }
         });
 
-        app.MapGet("/novel", async (IGetNovelsUseCase getNovelsUseCase, int take = 5, int skip = 0) =>
+        group.MapGet("/", async (IGetNovelsUseCase getNovelsUseCase, int take = 5, int skip = 0) =>
         {
             try
             {
@@ -83,11 +83,11 @@ public static class NovelRoute
             }
         });
 
-        app.MapPut("/novel/{id}", async (Guid id,IUpdateNovelUseCase updateNovelUseCase,UpdateNovelDto novelUpdateDto) =>
+        group.MapPut("/{slug}", async (string slug,IUpdateNovelUseCase updateNovelUseCase,UpdateNovelDto novelUpdateDto) =>
         {
             try
             {
-                var novel = await updateNovelUseCase.Execute(id, novelUpdateDto);
+                var novel = await updateNovelUseCase.Execute(slug, novelUpdateDto);
                 return Results.Ok(novel);
             }
             catch (ErrorCustomException ex)
@@ -100,7 +100,7 @@ public static class NovelRoute
             }
         });
 
-        app.MapDelete("/novel/{id}", async (Guid id, IDeleteNovelUseCase deleteNovelUseCase) =>
+        group.MapDelete("/{id}", async (Guid id, IDeleteNovelUseCase deleteNovelUseCase) =>
         {
             try
             {
@@ -112,5 +112,7 @@ public static class NovelRoute
                 return Results.BadRequest(new {error = ex.Errors});
             }
         });
+
+        return group;
     }
 }

@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using backend.Data.Enums;
 
 namespace backend.Entities;

@@ -6,6 +6,5 @@ public class CreateChapterDto
     public string Content { get; set; } =string.Empty;
     public int Number { get; set; }
     public int Volume { get; set; }
-    public string NovelSlug { get; set; } = string.Empty;
-    public Guid? NovelId { get; set; }
+    public string? NovelSlug { get; set; } = string.Empty;
 }

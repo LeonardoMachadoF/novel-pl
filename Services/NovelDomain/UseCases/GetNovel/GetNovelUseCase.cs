@@ -1,7 +1,8 @@
 using backend.Data.Repository;
 using backend.Entities;
+using backend.Services.NovelDomain.UseCases.GetNovelById;
 
-namespace backend.Services.NovelDomain.UseCases.GetNovelById;
+namespace backend.Services.NovelDomain.UseCases.GetNovel;
 
 public class GetNovelUseCase:IGetNovelUseCase
 {
@@ -24,7 +25,7 @@ public class GetNovelUseCase:IGetNovelUseCase
     
     public async Task<Novel?> Execute(string slug)
     {
-        var novel = await _novelRepository.GetNovelBySlug(slug);
+        var novel = await _novelRepository.GetNovelBySlugWithChapters(slug);
         if (novel == null)
         {
             throw new Exception("Novel não encontrada5");
