@@ -16,7 +16,8 @@ public static class AuthRoute
             try
             {
                 var user = await createUserUseCase.Execute(createUserDto);
-                return Results.Created($"/novel/{user.UserId}", new { user.Email, user.Username});
+                user.Password = "";
+                return Results.Created($"/novel/{user.UserId}", user);
             }
             catch (ErrorCustomException ex)
             {
@@ -35,7 +36,7 @@ public static class AuthRoute
             {
                 return Results.Unauthorized();
             }
-            return Results.Ok(token);
+            return Results.Ok(new {token});
         });
 
         return group;

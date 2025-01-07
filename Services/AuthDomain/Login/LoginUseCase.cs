@@ -29,7 +29,7 @@ public class LoginUseCase:ILoginUseCase
         
         if (verificationResult == PasswordVerificationResult.Success)
         {
-            return _tokenGenerator.GenerateToken(user.UserId, user.Email);
+            return _tokenGenerator.GenerateToken(user);
         }
 
         return null;
