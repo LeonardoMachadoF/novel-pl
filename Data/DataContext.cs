@@ -10,6 +10,7 @@ public class DataContext: DbContext
     public DbSet<Novel> Novels { get; set; }
     public DbSet<Chapter> Chapters { get; set; }
     public DbSet<Genre> Genres { get; set; }
+    public DbSet<User> Users { get; set; }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -36,5 +37,12 @@ public class DataContext: DbContext
         modelBuilder.Entity<Novel>()
             .HasIndex(n=>n.Slug)
             .IsUnique();
+        
+        modelBuilder.Entity<User>(entity =>
+        {
+            entity.HasIndex(u => u.Username).IsUnique();
+            entity.HasIndex(u => u.Email).IsUnique();
+        });
+        
     }
 }

@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using backend.Entities;
 using backend.Entities.Dto;
 using backend.Services.ErrorService;
@@ -44,11 +45,12 @@ public static class NovelRoute
         //         return Results.NotFound(new {error = ex.Message});
         //     }
         // });
-        
-        group.MapGet("/{slug}", async (IGetNovelUseCase getNovel, string slug) =>
+
+        group.MapGet("/{slug}", async (ClaimsPrincipal claims, IGetNovelUseCase getNovel, string slug) =>
         {
             try
             {
+                string userId = claims.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
                 if (Guid.TryParse(slug, out Guid novelId))
                 {
                     var novel = await getNovel.Execute(novelId);
@@ -62,9 +64,9 @@ public static class NovelRoute
             }
             catch (Exception ex)
             {
-                return Results.NotFound(new {error = ex.Message});
+                return Results.NotFound(new { error = ex.Message });
             }
-        });
+        }).RequireAuthorization();
 
         group.MapGet("/", async (IGetNovelsUseCase getNovelsUseCase, int take = 5, int skip = 0) =>
         {
@@ -83,7 +85,7 @@ public static class NovelRoute
             }
         });
 
-        group.MapPut("/{slug}", async (string slug,IUpdateNovelUseCase updateNovelUseCase,UpdateNovelDto novelUpdateDto) =>
+        group.MapPut("/{slug}", async ( string slug,IUpdateNovelUseCase updateNovelUseCase,UpdateNovelDto novelUpdateDto) =>
         {
             try
             {

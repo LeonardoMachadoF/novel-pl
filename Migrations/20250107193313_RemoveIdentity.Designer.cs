@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using backend.Data;
 
@@ -10,9 +11,11 @@ using backend.Data;
 namespace backend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20250107193313_RemoveIdentity")]
+    partial class RemoveIdentity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.0");
@@ -30,6 +33,21 @@ namespace backend.Migrations
                     b.HasIndex("NovelId");
 
                     b.ToTable("NovelGenre");
+                });
+
+            modelBuilder.Entity("NovelUser", b =>
+                {
+                    b.Property<Guid>("FavoritedByUserId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("NovelsId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("FavoritedByUserId", "NovelsId");
+
+                    b.HasIndex("NovelsId");
+
+                    b.ToTable("NovelUser");
                 });
 
             modelBuilder.Entity("backend.Entities.Chapter", b =>
@@ -175,12 +193,6 @@ namespace backend.Migrations
 
                     b.HasKey("UserId");
 
-                    b.HasIndex("Email")
-                        .IsUnique();
-
-                    b.HasIndex("Username")
-                        .IsUnique();
-
                     b.ToTable("Users");
                 });
 
@@ -195,6 +207,21 @@ namespace backend.Migrations
                     b.HasOne("backend.Entities.Novel", null)
                         .WithMany()
                         .HasForeignKey("NovelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("NovelUser", b =>
+                {
+                    b.HasOne("backend.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("FavoritedByUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("backend.Entities.Novel", null)
+                        .WithMany()
+                        .HasForeignKey("NovelsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
