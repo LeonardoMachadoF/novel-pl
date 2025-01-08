@@ -40,4 +40,6 @@ public class Novel
     
     public List<Genre> Genres { get; set; }
     public List<Chapter> Chapters { get; set; }
+    [JsonIgnore]
+    public List<User> Users { get; set; }
 }

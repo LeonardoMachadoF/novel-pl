@@ -30,4 +30,16 @@ public class UserRepository : IUserRepository
         var user = await _context.Users.FirstOrDefaultAsync(x => x.Email == email || x.Username == usermail);
         return user;
     }
+
+    public async Task<User> FindUserInfo(string username)
+    {
+        var user = await _context.Users.Include(x=>x.Novels).FirstOrDefaultAsync(a => a.Username == username);
+        return user;
+    }
+
+    public async Task AddFavorite(User user, Novel novel)
+    {
+        user.Novels.Add(novel);
+        await _context.SaveChangesAsync();
+    }
 }

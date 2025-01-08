@@ -16,22 +16,23 @@ public static class NovelRoute
 {
     public static RouteGroupBuilder NovelRoutes(this RouteGroupBuilder group)
     {
-        group.MapPost("/", async (CreateNovelDto novelDto, ICreateNovelUseCase createNovelUseCase, ClaimsPrincipal user) =>
-        {
-            try
+        group.MapPost("/",
+            async (CreateNovelDto novelDto, ICreateNovelUseCase createNovelUseCase, ClaimsPrincipal user) =>
             {
-                var novel = await createNovelUseCase.Execute(novelDto);
-                return Results.Created($"/novel/{novel.Id}", novel);
-            }
-            catch (ErrorCustomException ex)
-            {
-                return Results.BadRequest(new { error = ex.Errors });
-            }
-            catch (Exception ex)
-            {
-                return Results.InternalServerError(new { error = ex.Message });
-            }
-        }).RequireAuthorization();
+                try
+                {
+                    var novel = await createNovelUseCase.Execute(novelDto);
+                    return Results.Created($"/novel/{novel.Id}", novel);
+                }
+                catch (ErrorCustomException ex)
+                {
+                    return Results.BadRequest(new { error = ex.Errors });
+                }
+                catch (Exception ex)
+                {
+                    return Results.InternalServerError(new { error = ex.Message });
+                }
+            });
         
         // group.MapGet("/{id}", async (IGetNovelByIdUseCase getNovelByIdUseCase, Guid id) =>
         // {

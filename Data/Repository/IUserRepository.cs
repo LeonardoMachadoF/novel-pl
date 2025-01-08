@@ -9,4 +9,8 @@ public interface IUserRepository
     Task<User> AutenticateUser(string username, string password);
     
     Task<User> FindUserByEmailOrUsermail(string email, string username);
+    
+    Task<User> FindUserInfo(string username);
+    
+    Task AddFavorite(User user, Novel novel);
 }

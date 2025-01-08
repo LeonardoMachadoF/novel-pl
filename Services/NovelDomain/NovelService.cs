@@ -1,5 +1,6 @@
 using backend.Services.NovelDomain.UseCases.GetNovel;
 using backend.Services.NovelDomain.UseCases.GetNovelById;
+using backend.Services.NovelService.AddToFavorite;
 using backend.Services.NovelServices.UseCases.CreateNovel;
 using backend.Services.NovelServices.UseCases.DeleteNovel;
 using backend.Services.NovelServices.UseCases.GetNovels;
@@ -17,6 +18,7 @@ public static class NovelService
         services.AddScoped<IGetNovelUseCase, GetNovelUseCase>();
         // services.AddScoped<IGetNovelBySlugUseCase, GetNovelBySlugUseCase>();
         services.AddScoped<IUpdateNovelUseCase, UpdateNovelUseCase>();
+        services.AddScoped<IAddToFavoriteUseCase, AddToFavoriteUseCase>();
 
         return services;
     }

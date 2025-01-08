@@ -32,6 +32,21 @@ namespace backend.Migrations
                     b.ToTable("NovelGenre");
                 });
 
+            modelBuilder.Entity("NovelUser", b =>
+                {
+                    b.Property<Guid>("NovelsId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("UsersUserId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("NovelsId", "UsersUserId");
+
+                    b.HasIndex("UsersUserId");
+
+                    b.ToTable("NovelUser");
+                });
+
             modelBuilder.Entity("backend.Entities.Chapter", b =>
                 {
                     b.Property<Guid>("Id")
@@ -199,6 +214,21 @@ namespace backend.Migrations
                     b.HasOne("backend.Entities.Novel", null)
                         .WithMany()
                         .HasForeignKey("NovelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("NovelUser", b =>
+                {
+                    b.HasOne("backend.Entities.Novel", null)
+                        .WithMany()
+                        .HasForeignKey("NovelsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("backend.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("UsersUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
