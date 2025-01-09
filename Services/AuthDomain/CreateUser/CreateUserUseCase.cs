@@ -13,12 +13,11 @@ public class CreateUserUseCase: ICreateUserUseCase
     private readonly IUserRepository _userRepository;
     private readonly PasswordHasher<User> _passwordHasher;
     
-    public CreateUserUseCase(IUserValidationService userValidationService, IUserRepository userRepository, TokenGenerator tokenGenerator)
+    public CreateUserUseCase(IUserValidationService userValidationService, IUserRepository userRepository)
     {
         _userValidationService = userValidationService;
         _userRepository = userRepository;
         _passwordHasher = new PasswordHasher<User>();
-        
     }
     
     public async Task<User> Execute(CreateUserDto createUserDto)

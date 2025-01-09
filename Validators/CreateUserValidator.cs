@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace backend.Validators;
 
-internal sealed class CreateUserValidator:AbstractValidator<CreateUserDto>
+public sealed class CreateUserValidator:AbstractValidator<CreateUserDto>
 {
     public CreateUserValidator()
     {
