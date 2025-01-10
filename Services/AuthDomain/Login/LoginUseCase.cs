@@ -9,9 +9,9 @@ namespace backend.Services.AuthDomain;
 public class LoginUseCase:ILoginUseCase
 {
     private readonly IUserRepository _userRepository;
-    private readonly TokenGenerator _tokenGenerator;
+    private readonly ITokenGenerator _tokenGenerator;
 
-    public LoginUseCase(IUserRepository userRepository, TokenGenerator tokenGenerator)
+    public LoginUseCase(IUserRepository userRepository, ITokenGenerator tokenGenerator)
     {
         _userRepository = userRepository;
         _tokenGenerator = tokenGenerator;

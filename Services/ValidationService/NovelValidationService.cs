@@ -49,9 +49,4 @@ public class NovelValidationService:INovelValidationService
             throw new ErrorCustomException(errors);
         }
     }
-    
-    public bool StringIsNotNullNorEmpty(object? value)
-    {
-        return (value != null && !(value is string str && str == ""));
-    }
 } 

@@ -9,5 +9,4 @@ public interface INovelValidationService
      void ValidadeUpdate(UpdateNovelDto updateNovelDto);
      
      void ValidadePagination(IPagination pagination);
-     bool StringIsNotNullNorEmpty(object? stringValue);
 }

@@ -6,7 +6,11 @@ using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegiste
 
 namespace backend.Utils;
 
-public class TokenGenerator
+public interface ITokenGenerator
+{
+    string GenerateToken(User user);
+}
+public class TokenGenerator: ITokenGenerator
 {
     public string GenerateToken(User user)
     {

@@ -20,7 +20,7 @@ public static class AuthRoute
             {
                 var user = await createUserUseCase.Execute(createUserDto);
                 user.Password = "";
-                return Results.Created($"/novel/{user.UserId}", user);
+                return Results.Created($"/user/{user.UserId}", user);
             }
             catch (ErrorCustomException ex)
             {

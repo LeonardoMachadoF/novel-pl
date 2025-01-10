@@ -2,6 +2,7 @@ using backend.Data.Repository;
 using backend.Entities;
 using backend.Entities.Dto;
 using backend.Services.ValidationService;
+using backend.Utils;
 
 namespace backend.Services.ChapterDomain.UseCases.UpdateChapter;
 
@@ -9,13 +10,11 @@ public class UpdateChapterUseCase: IUpdateChapterUseCase
 {
     private readonly IChapterRepository _chapterRepository;
     private readonly IChapterValidationService _validationService;
-    private readonly INovelValidationService _novelValidationService;
     
     public UpdateChapterUseCase(IChapterRepository chapterRepository, IChapterValidationService validationService, INovelValidationService novelValidationService)
     {
         _chapterRepository = chapterRepository;
         _validationService = validationService;
-        _novelValidationService = novelValidationService;
     }
 
 
@@ -34,7 +33,7 @@ public class UpdateChapterUseCase: IUpdateChapterUseCase
             var valueFromDto = proprerty.GetValue(chapterDto);
             var targetProperty = existentChapter.GetType().GetProperty(proprerty.Name);
 
-            if (!_novelValidationService.StringIsNotNullNorEmpty(valueFromDto) || targetProperty == null) continue;
+            if (StringHelpers.StringIsNullorEmpty(valueFromDto) || targetProperty == null) continue;
             targetProperty.SetValue(existentChapter, valueFromDto);
         }
         

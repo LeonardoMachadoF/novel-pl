@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace backend.Validators;
 
-internal sealed class UpdateChapterValidator: AbstractValidator<UpdateChapterDto>
+public sealed class UpdateChapterValidator: AbstractValidator<UpdateChapterDto>
 {
     public UpdateChapterValidator()
     {

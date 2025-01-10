@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace backend.Validators;
 
-internal sealed class CreateChapterValidator:AbstractValidator<CreateChapterDto>
+public sealed class CreateChapterValidator:AbstractValidator<CreateChapterDto>
 {
     public CreateChapterValidator()
     {

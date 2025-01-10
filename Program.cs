@@ -39,7 +39,7 @@ builder.Services.AddScoped<INovelValidationService, NovelValidationService>();
 builder.Services.AddScoped<IChapterValidationService, ChapterValidationService>();
 builder.Services.AddScoped<IUserValidationService, UserValidationService>();
 builder.Services.AddSingleton<IErrorService, ErrorService>();
-builder.Services.AddSingleton<TokenGenerator>();
+builder.Services.AddSingleton<ITokenGenerator,TokenGenerator>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(x =>

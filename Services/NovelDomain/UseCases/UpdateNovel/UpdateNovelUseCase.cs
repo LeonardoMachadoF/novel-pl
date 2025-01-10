@@ -2,6 +2,7 @@ using backend.Data.Repository;
 using backend.Entities;
 using backend.Entities.Dto;
 using backend.Services.ValidationService;
+using backend.Utils;
 
 namespace backend.Services.NovelServices.UseCases.UpdateNovel;
 
@@ -31,7 +32,7 @@ public class UpdateNovelUseCase: IUpdateNovelUseCase
             var valueFromDto = property.GetValue(updateNovelDto);
             var targetProperty = existentNovel.GetType().GetProperty(property.Name);
             
-            if (!_validationService.StringIsNotNullNorEmpty(valueFromDto) || targetProperty == null) continue;
+            if (StringHelpers.StringIsNullorEmpty(valueFromDto) || targetProperty == null) continue;
             
             targetProperty.SetValue(existentNovel, valueFromDto);
         }
