@@ -7,19 +7,17 @@ using backend.Services.NovelDomain.UseCases.GetNovelById;
 using backend.Services.ValidationService;
 using Moq;
 
+namespace backend_pl_tests.UseCases.ChapterTests;
+
 public class CreateChapterUseCaseTests
 {
-    private readonly Mock<IChapterRepository> _chapterRepository;
-    private readonly Mock<IChapterValidationService> _validationService;
-    private readonly Mock<IGetNovelUseCase> _getNovelUseCase;
-    private CreateChapterUseCase _createChapterService;
+    private readonly Mock<IChapterRepository> _chapterRepository = new();
+    private readonly Mock<IChapterValidationService> _validationService = new();
+    private readonly Mock<IGetNovelUseCase> _getNovelUseCase = new();
+    private readonly CreateChapterUseCase _createChapterService;
 
     public CreateChapterUseCaseTests()
     {
-        _chapterRepository = new Mock<IChapterRepository>();
-        _validationService = new Mock<IChapterValidationService>();
-        _getNovelUseCase = new Mock<IGetNovelUseCase>();
-
         _createChapterService = new CreateChapterUseCase(
             _chapterRepository.Object,
             _validationService.Object,
@@ -47,7 +45,7 @@ public class CreateChapterUseCaseTests
         var novel = CreateNovel("existente-slug");
 
         _getNovelUseCase.Setup(x =>
-                x.Execute(createChapterDto.NovelSlug)
+                x.Execute(createChapterDto.NovelSlug!)
             )
             .ReturnsAsync(novel);
         

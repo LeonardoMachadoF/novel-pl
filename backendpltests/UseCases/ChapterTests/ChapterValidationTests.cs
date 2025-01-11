@@ -4,7 +4,7 @@ using backend.Services.ValidationService;
 using backend.Validators;
 using Moq;
 
-namespace backendtests.UseCases.ChapterTests;
+namespace backend_pl_tests.UseCases.ChapterTests;
 
 public class ChapterValidationTests
 {

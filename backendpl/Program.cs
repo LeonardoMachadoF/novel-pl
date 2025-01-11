@@ -10,6 +10,7 @@ using backend.Services.ErrorService;
 using backend.Services.NovelService;
 using backend.Services.ValidationService;
 using backend.Utils;
+using backendpl.Validators;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -31,13 +32,11 @@ builder.Services.AddDbContext<DataContext>(opts =>
 builder.Services.AddAuthUseCases();
 builder.Services.AddNovelUseCases();
 builder.Services.AddChapterUseCases();
+builder.Services.AddValidators();
 
 builder.Services.AddScoped<INovelRepository, NovelRepository>();
 builder.Services.AddScoped<IChapterRepository, ChapterRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<INovelValidationService, NovelValidationService>();
-builder.Services.AddScoped<IChapterValidationService, ChapterValidationService>();
-builder.Services.AddScoped<IUserValidationService, UserValidationService>();
 builder.Services.AddSingleton<IErrorService, ErrorService>();
 builder.Services.AddSingleton<ITokenGenerator,TokenGenerator>();
 
@@ -78,7 +77,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseHttpsRedirection();
-
 
 app.MapGroup("/auth").AuthRoutes().WithTags("Auth");
 app.MapGroup("/novel").NovelRoutes().WithTags("Novel");

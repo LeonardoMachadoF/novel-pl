@@ -33,7 +33,7 @@ public class UpdateChapterUseCase: IUpdateChapterUseCase
             var valueFromDto = proprerty.GetValue(chapterDto);
             var targetProperty = existentChapter.GetType().GetProperty(proprerty.Name);
 
-            if (StringHelpers.StringIsNullorEmpty(valueFromDto) || targetProperty == null) continue;
+            if (StringHelpers.StringIsNullOrEmpty(valueFromDto) || targetProperty == null) continue;
             targetProperty.SetValue(existentChapter, valueFromDto);
         }
         

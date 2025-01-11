@@ -32,7 +32,7 @@ public class UpdateNovelUseCase: IUpdateNovelUseCase
             var valueFromDto = property.GetValue(updateNovelDto);
             var targetProperty = existentNovel.GetType().GetProperty(property.Name);
             
-            if (StringHelpers.StringIsNullorEmpty(valueFromDto) || targetProperty == null) continue;
+            if (StringHelpers.StringIsNullOrEmpty(valueFromDto) || targetProperty == null) continue;
             
             targetProperty.SetValue(existentNovel, valueFromDto);
         }
