@@ -1,6 +1,5 @@
 using backend.Entities.Dto;
 using backend.Services.ErrorService;
-using backend.Services.ValidationService;
 using backend.Validators;
 using Moq;
 
@@ -8,7 +7,7 @@ namespace backendtests.UseCases;
 
 public class UserValidationServiceTests
 {
-    private readonly UserValidationService _validationService;
+    private readonly ValidationBehavior<CreateUserDto> _validationBehavior;
     private readonly Mock<IErrorService> _mockErrorService;
     private readonly CreateUserValidator _createUserValidator;
 
@@ -16,7 +15,7 @@ public class UserValidationServiceTests
     {
         _mockErrorService = new Mock<IErrorService>();
         _createUserValidator = new CreateUserValidator();
-        _validationService = new UserValidationService(_createUserValidator, _mockErrorService.Object);
+        _validationBehavior = new ValidationBehavior<CreateUserDto>(_createUserValidator, _mockErrorService.Object);
     }
 
     [Theory]
@@ -32,7 +31,7 @@ public class UserValidationServiceTests
             Password = password
         };
 
-        var exception = Assert.Throws<ErrorCustomException>(() => _validationService.ValidateCreate(invalidUser));
+        var exception = Assert.Throws<ErrorCustomException>(() => _validationBehavior.Validate(invalidUser));
         Assert.NotNull(exception);
     }
 
@@ -46,6 +45,6 @@ public class UserValidationServiceTests
             Password = "password123"
         };
 
-        _validationService.ValidateCreate(validUser);
+        _validationBehavior.Validate(validUser);
     }
 }

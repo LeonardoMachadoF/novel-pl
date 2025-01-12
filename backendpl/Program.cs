@@ -1,20 +1,14 @@
 using backend.Data;
 using backend.Data.Repository;
-using backend.Entities;
-using backend.Entities.Dto;
 using backend.Routes;
 using backend.Services.AuthDomain;
-using backend.Services.AuthDomain.CreateUser;
 using backend.Services.ChapterDomain;
 using backend.Services.ErrorService;
 using backend.Services.NovelService;
-using backend.Services.ValidationService;
 using backend.Utils;
 using backendpl.Validators;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 

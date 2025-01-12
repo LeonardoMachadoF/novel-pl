@@ -1,25 +1,25 @@
 using backend.Data.Repository;
 using backend.Entities;
 using backend.Entities.Dto;
-using backend.Services.ValidationService;
 using backend.Utils;
+using backendpl.Services.ValidationService;
 
 namespace backend.Services.NovelServices.UseCases.UpdateNovel;
 
 public class UpdateNovelUseCase: IUpdateNovelUseCase
 {
     private readonly INovelRepository _novelRepository;
-    private readonly INovelValidationService _validationService;
+    private readonly IValidationBehavior<UpdateNovelDto> _validationBehavior;
 
-    public UpdateNovelUseCase(INovelRepository novelRepository, INovelValidationService validationService)
+    public UpdateNovelUseCase(INovelRepository novelRepository, IValidationBehavior<UpdateNovelDto> validationBehavior)
     {
         _novelRepository = novelRepository;
-        _validationService = validationService;
+        _validationBehavior = validationBehavior;
     }
     
     public async Task<Novel> Execute(string slug, UpdateNovelDto updateNovelDto)
     {
-        _validationService.ValidadeUpdate(updateNovelDto);
+        _validationBehavior.Validate(updateNovelDto);
         
         var existentNovel = await _novelRepository.GetNovelBySlug(slug);
         if (existentNovel == null)

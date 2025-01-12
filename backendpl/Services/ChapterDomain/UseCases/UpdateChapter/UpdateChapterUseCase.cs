@@ -1,26 +1,26 @@
 using backend.Data.Repository;
 using backend.Entities;
 using backend.Entities.Dto;
-using backend.Services.ValidationService;
 using backend.Utils;
+using backendpl.Services.ValidationService;
 
 namespace backend.Services.ChapterDomain.UseCases.UpdateChapter;
 
 public class UpdateChapterUseCase: IUpdateChapterUseCase
 {
     private readonly IChapterRepository _chapterRepository;
-    private readonly IChapterValidationService _validationService;
+    private readonly IValidationBehavior<UpdateChapterDto> _validationBehavior;
     
-    public UpdateChapterUseCase(IChapterRepository chapterRepository, IChapterValidationService validationService, INovelValidationService novelValidationService)
+    public UpdateChapterUseCase(IChapterRepository chapterRepository, IValidationBehavior<UpdateChapterDto> validationBehavior)
     {
         _chapterRepository = chapterRepository;
-        _validationService = validationService;
+        _validationBehavior = validationBehavior;
     }
 
 
     public async Task<Chapter> Execute(UpdateChapterDto chapterDto, Guid Id)
     {
-        _validationService.ValidateUpdate(chapterDto);
+        _validationBehavior.Validate(chapterDto);
         
         var existentChapter = await _chapterRepository.GetChapterById(Id);
         if (existentChapter == null)

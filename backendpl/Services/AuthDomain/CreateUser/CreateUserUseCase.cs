@@ -1,28 +1,27 @@
 using backend.Data.Repository;
 using backend.Entities;
 using backend.Entities.Dto;
-using backend.Services.ValidationService;
-using backend.Utils;
+using backendpl.Services.ValidationService;
 using Microsoft.AspNetCore.Identity;
 
 namespace backend.Services.AuthDomain.CreateUser;
 
 public class CreateUserUseCase: ICreateUserUseCase
 {
-    private readonly IUserValidationService _userValidationService;
     private readonly IUserRepository _userRepository;
     private readonly PasswordHasher<User> _passwordHasher;
+    private readonly IValidationBehavior<CreateUserDto> _validationBehavior;
     
-    public CreateUserUseCase(IUserValidationService userValidationService, IUserRepository userRepository)
+    public CreateUserUseCase(IValidationBehavior<CreateUserDto> validationBehavior, IUserRepository userRepository)
     {
-        _userValidationService = userValidationService;
+        _validationBehavior = validationBehavior;
         _userRepository = userRepository;
         _passwordHasher = new PasswordHasher<User>();
     }
     
     public async Task<User> Execute(CreateUserDto createUserDto)
     {
-        _userValidationService.ValidateCreate(createUserDto);
+        _validationBehavior.Validate(createUserDto);
         
         var existentUser = await _userRepository.FindUserByEmailOrUsermail(createUserDto.Email, createUserDto.Username);
         

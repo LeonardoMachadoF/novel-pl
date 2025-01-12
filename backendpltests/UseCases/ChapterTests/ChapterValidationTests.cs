@@ -1,6 +1,5 @@
 using backend.Entities.Dto;
 using backend.Services.ErrorService;
-using backend.Services.ValidationService;
 using backend.Validators;
 using Moq;
 
@@ -8,7 +7,8 @@ namespace backend_pl_tests.UseCases.ChapterTests;
 
 public class ChapterValidationTests
 {
-    private readonly ChapterValidationService _chapterValidationService;
+    private readonly ValidationBehavior<UpdateChapterDto> _validationUpdateChapterBehavior;
+    private readonly ValidationBehavior<CreateChapterDto> _validationCreateChapterBehavior;
     private readonly Mock<IErrorService> _mockErrorService;
     private readonly CreateChapterValidator _createChapterValidator;
     private readonly UpdateChapterValidator _updateChapterValidator;
@@ -18,10 +18,9 @@ public class ChapterValidationTests
         _mockErrorService = new Mock<IErrorService>();
         _createChapterValidator = new CreateChapterValidator();
         _updateChapterValidator = new UpdateChapterValidator();
-        _chapterValidationService = new ChapterValidationService(
-            _createChapterValidator,
-            _mockErrorService.Object,
-            _updateChapterValidator);
+        _validationUpdateChapterBehavior = new ValidationBehavior<UpdateChapterDto>(_updateChapterValidator, _mockErrorService.Object);
+        _validationCreateChapterBehavior = new ValidationBehavior<CreateChapterDto>(_createChapterValidator, _mockErrorService.Object);
+    
     }
 
     [Theory]
@@ -41,7 +40,7 @@ public class ChapterValidationTests
             NovelSlug = novelSlug
         };
 
-        var exception = Assert.Throws<ErrorCustomException>(() => _chapterValidationService.ValidateCreate(invalidChapter));
+        var exception = Assert.Throws<ErrorCustomException>(() => _validationCreateChapterBehavior.Validate(invalidChapter));
         Assert.NotNull(exception);
     }
 
@@ -57,7 +56,7 @@ public class ChapterValidationTests
             NovelSlug = "slug-novela-válido"
         };
 
-        _chapterValidationService.ValidateCreate(validChapter);
+        _validationCreateChapterBehavior.Validate(validChapter);
     }
 
     [Theory]
@@ -74,7 +73,7 @@ public class ChapterValidationTests
             Volume = volume
         };
 
-        var exception = Assert.Throws<ErrorCustomException>(() => _chapterValidationService.ValidateUpdate(invalidChapter));
+        var exception = Assert.Throws<ErrorCustomException>(() => _validationUpdateChapterBehavior.Validate(invalidChapter));
         Assert.NotNull(exception);
     }
 
@@ -89,6 +88,6 @@ public class ChapterValidationTests
             Volume = 1
         };
 
-        _chapterValidationService.ValidateUpdate(validChapter);
+        _validationUpdateChapterBehavior.Validate(validChapter);
     }
 }

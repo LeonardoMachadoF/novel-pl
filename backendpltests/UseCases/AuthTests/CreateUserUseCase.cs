@@ -22,7 +22,7 @@ public class CreateUserUseCaseTests: TestBase
     {
         var validUserDto = CreateValidUserDto("newuser@example.com", "newuser", "password123");
 
-        MockValidationService.Setup(v => v.ValidateCreate(validUserDto));
+        MockValidationService.Setup(v => v.Validate(validUserDto));
         MockUserRepository.Setup(repo => repo.FindUserByEmailOrUsermail(validUserDto.Email, validUserDto.Username))
             .ReturnsAsync((User)null);
         MockUserRepository.Setup(repo => repo.Add(It.IsAny<User>())).Returns(Task.CompletedTask);
@@ -43,7 +43,7 @@ public class CreateUserUseCaseTests: TestBase
         var validUserDto = CreateValidUserDto("existinguser@email.com", "newuser", "password123");
         var existingUser = new User { Email = "existinguser@email.com", Username = "existinguser", Password = "hashedPassword" };
 
-        MockValidationService.Setup(v => v.ValidateCreate(It.IsAny<CreateUserDto>()));
+        MockValidationService.Setup(v => v.Validate(It.IsAny<CreateUserDto>()));
         MockUserRepository.Setup(repo => repo.FindUserByEmailOrUsermail(validUserDto.Email, validUserDto.Username))
             .ReturnsAsync(existingUser);
 

@@ -1,7 +1,8 @@
 using backend.Data.Repository;
 using backend.Entities;
+using backend.Entities.Dto;
 using backend.Services.ChapterDomain.UseCases.UpdateChapter;
-using backend.Services.ValidationService;
+using backendpl.Services.ValidationService;
 using Moq;
 
 namespace backendtests.UseCases.ChapterTests;
@@ -9,8 +10,7 @@ namespace backendtests.UseCases.ChapterTests;
 public class UpdateChapterUseCaseTests: TestBase
 {
     private readonly Mock<IChapterRepository> _chapterRepository = new();
-    private readonly Mock<IChapterValidationService> _validationService= new();
-    private readonly Mock<INovelValidationService> _novelValidationService= new();
+    private readonly Mock<IValidationBehavior<UpdateChapterDto>> _validationUpdate = new();
     
     [Fact]
     public async Task Execute_ShouldThrowException_WhenChapterIsNotFound()
@@ -19,7 +19,7 @@ public class UpdateChapterUseCaseTests: TestBase
         var chapterDto = GetUpdateChapterDto();
         _chapterRepository.Setup(x=>x.GetChapterById(chapterId))
             .ReturnsAsync((Chapter)null);
-        var updateChapterUseCase = new UpdateChapterUseCase(_chapterRepository.Object, _validationService.Object, _novelValidationService.Object);
+        var updateChapterUseCase = new UpdateChapterUseCase(_chapterRepository.Object, _validationUpdate.Object);
 
         var exception = await Assert.ThrowsAsync<Exception>(() => updateChapterUseCase.Execute(chapterDto, chapterId));
         
@@ -37,8 +37,7 @@ public class UpdateChapterUseCaseTests: TestBase
         
         var updateChapterUseCase = new UpdateChapterUseCase(
             _chapterRepository.Object,
-            _validationService.Object,
-            _novelValidationService.Object
+            _validationUpdate.Object
         );
         
         var updatedChapter = await updateChapterUseCase.Execute(chapterDto, existingChapter.Id);

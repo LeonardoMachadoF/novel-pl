@@ -4,7 +4,7 @@ using backend.Entities;
 using backend.Entities.Dto;
 using backend.Services.ChapterDomain.UseCases;
 using backend.Services.NovelDomain.UseCases.GetNovelById;
-using backend.Services.ValidationService;
+using backendpl.Services.ValidationService;
 using Moq;
 
 namespace backend_pl_tests.UseCases.ChapterTests;
@@ -12,15 +12,15 @@ namespace backend_pl_tests.UseCases.ChapterTests;
 public class CreateChapterUseCaseTests
 {
     private readonly Mock<IChapterRepository> _chapterRepository = new();
-    private readonly Mock<IChapterValidationService> _validationService = new();
+    private readonly Mock<IValidationBehavior<CreateChapterDto>> _validation = new();
     private readonly Mock<IGetNovelUseCase> _getNovelUseCase = new();
-    private readonly CreateChapterUseCase _createChapterService;
+    private readonly CreateChapterUseCase _createChapterUseCase;
 
     public CreateChapterUseCaseTests()
     {
-        _createChapterService = new CreateChapterUseCase(
+        _createChapterUseCase = new CreateChapterUseCase(
             _chapterRepository.Object,
-            _validationService.Object,
+            _validation.Object,
             _getNovelUseCase.Object
         );
     }
@@ -35,7 +35,7 @@ public class CreateChapterUseCaseTests
             .ReturnsAsync((Novel)null);
 
         // Act & Assert
-        await Assert.ThrowsAsync<Exception>(() => _createChapterService.Execute(createChapterDto));
+        await Assert.ThrowsAsync<Exception>(() => _createChapterUseCase.Execute(createChapterDto));
     }
 
     [Fact]
@@ -49,7 +49,7 @@ public class CreateChapterUseCaseTests
             )
             .ReturnsAsync(novel);
         
-        var chapter = await _createChapterService.Execute(createChapterDto);
+        var chapter = await _createChapterUseCase.Execute(createChapterDto);
         
         Assert.NotNull(chapter);
         Assert.Contains(chapter, novel.Chapters);

@@ -1,24 +1,24 @@
 using backend.Data.Repository;
 using backend.Entities;
-using backend.Services.ValidationService;
 using backend.Validators;
+using backendpl.Services.ValidationService;
 
 namespace backend.Services.NovelServices.UseCases.GetNovels;
 
 public class GetNovelsUseCase: IGetNovelsUseCase
 {
     private readonly INovelRepository _novelRepository;
-    private readonly INovelValidationService _validationService;
+    private readonly IValidationBehavior<IPagination> _validationBehavior;
 
-    public GetNovelsUseCase(INovelRepository novelRepository, INovelValidationService validationService)
+    public GetNovelsUseCase(INovelRepository novelRepository, IValidationBehavior<IPagination> validationBehavior)
     {
         _novelRepository = novelRepository;
-        _validationService = validationService;
+        _validationBehavior = validationBehavior;
     }
     
     public async Task<List<Novel>> Execute(int take, int skip)
     {
-        _validationService.ValidadePagination(new Pagination(take, skip));
+        _validationBehavior.Validate(new Pagination(take, skip));
         var novels = await _novelRepository.GetNovels(take, skip);
         return novels;
     }
