@@ -32,6 +32,6 @@ public class LoginUseCase:ILoginUseCase
             return _tokenGenerator.GenerateToken(user);
         }
 
-        return null;
+        return "";
     }
 }

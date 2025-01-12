@@ -1,5 +1,6 @@
 using backend.Data;
 using backend.Data.Repository;
+using backend.Middlewares;
 using backend.Routes;
 using backend.Services.AuthDomain;
 using backend.Services.ChapterDomain;
@@ -28,6 +29,7 @@ builder.Services.AddNovelUseCases();
 builder.Services.AddChapterUseCases();
 builder.Services.AddValidators();
 
+builder.Services.AddTransient<GlobalExceptionHandlingMiddleware>();
 builder.Services.AddScoped<INovelRepository, NovelRepository>();
 builder.Services.AddScoped<IChapterRepository, ChapterRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
@@ -70,10 +72,12 @@ if (app.Environment.IsDevelopment())
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
+
 app.UseHttpsRedirection();
 
 app.MapGroup("/auth").AuthRoutes().WithTags("Auth");
 app.MapGroup("/novel").NovelRoutes().WithTags("Novel");
 app.MapGroup("/{slug}/chapter").ChapterRoutes().WithTags("Chapter");
 
-app.Run();
+app.Run(); 

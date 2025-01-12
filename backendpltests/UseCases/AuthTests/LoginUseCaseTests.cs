@@ -53,7 +53,7 @@ public class LoginUseCaseTests: TestBase
         
         var result = await useCase.Execute(username, invalidPassword);
         
-        Assert.Null(result);
+        Assert.Equal("", result);
         MockUserRepository.Verify(repo => repo.FindUserByEmailOrUsermail(It.IsAny<string>(), username), Times.Once);
     }
 
