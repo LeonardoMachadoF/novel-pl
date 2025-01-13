@@ -4,7 +4,7 @@ using FluentValidation;
 
 namespace backend.Validators;
 
-internal sealed class UpdateNovelValidator:AbstractValidator<UpdateNovelDto>
+public sealed class UpdateNovelValidator:AbstractValidator<UpdateNovelDto>
 {
     public UpdateNovelValidator()
     {

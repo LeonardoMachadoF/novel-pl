@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace backend.Validators;
 
-internal sealed class CreateNovelValidator: AbstractValidator<CreateNovelDto>
+public sealed class CreateNovelValidator: AbstractValidator<CreateNovelDto>
 {
     public CreateNovelValidator()
     {

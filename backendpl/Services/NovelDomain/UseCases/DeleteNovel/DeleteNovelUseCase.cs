@@ -14,7 +14,7 @@ public class DeleteNovelUseCase: IDeleteNovelUseCase
     {
         var novel = await _novelRepository.GetNovelById(id);
         if (novel == null)
-            throw new Exception("Novel não encontrada1");
+            throw new Exception("Novel não encontrada");
         
         await _novelRepository.DeleteNovel(novel);
     }
