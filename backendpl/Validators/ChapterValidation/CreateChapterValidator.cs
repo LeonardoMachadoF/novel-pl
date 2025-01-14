@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace backend.Validators;
 
-public sealed class CreateChapterValidator:AbstractValidator<CreateChapterDto>
+public sealed class CreateChapterValidator : AbstractValidator<CreateChapterDto>
 {
     public CreateChapterValidator()
     {
@@ -22,8 +22,8 @@ public sealed class CreateChapterValidator:AbstractValidator<CreateChapterDto>
 
         RuleFor(x => x.NovelSlug)
             .MinimumLength(2).WithMessage("Title must be at least 2 characters long.")
-            .When(x=>x.NovelSlug.Length > 0);
-        
+            .When(x => x.NovelSlug.Length > 0);
+
         RuleFor(x => x.NovelSlug)
             .NotEmpty().WithMessage("NovelSlug is required is not provided.");
     }

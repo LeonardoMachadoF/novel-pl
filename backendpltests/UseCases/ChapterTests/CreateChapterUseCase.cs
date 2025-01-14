@@ -48,13 +48,14 @@ public class CreateChapterUseCaseTests
                 x.Execute(createChapterDto.NovelSlug!)
             )
             .ReturnsAsync(novel);
-        
+
         var chapter = await _createChapterUseCase.Execute(createChapterDto);
-        
+
         Assert.NotNull(chapter);
         Assert.Contains(chapter, novel.Chapters);
         _chapterRepository.Verify(x => x.Add(It.IsAny<Chapter>()), Times.Once);
     }
+
     private CreateChapterDto GetCreateChapterDto(string novelSlug) =>
         new CreateChapterDto
         {

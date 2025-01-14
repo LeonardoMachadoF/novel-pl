@@ -12,7 +12,7 @@ public class DeleteNovelUseCaseTests : NovelBaseTest
     private readonly DeleteNovelUseCase _deleteNovelUseCase;
 
     public DeleteNovelUseCaseTests() => _deleteNovelUseCase = new DeleteNovelUseCase(_novelRepository.Object);
-    
+
     [Fact]
     public async Task Execute_ShouldThrowException_WhenIdNotFound()
     {

@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace backend.Services.AuthDomain;
 
-public class LoginUseCase:ILoginUseCase
+public class LoginUseCase : ILoginUseCase
 {
     private readonly IUserRepository _userRepository;
     private readonly ITokenGenerator _tokenGenerator;
@@ -16,7 +16,7 @@ public class LoginUseCase:ILoginUseCase
         _userRepository = userRepository;
         _tokenGenerator = tokenGenerator;
     }
-    
+
     public async Task<string> Execute(string username, string password)
     {
         var user = await _userRepository.FindUserByEmailOrUsermail("", username);
@@ -24,9 +24,10 @@ public class LoginUseCase:ILoginUseCase
         {
             throw new Exception("User not found");
         }
+
         var passwordHasher = new PasswordHasher<User>();
         var verificationResult = passwordHasher.VerifyHashedPassword(user, user.Password, password);
-        
+
         if (verificationResult == PasswordVerificationResult.Success)
         {
             return _tokenGenerator.GenerateToken(user);

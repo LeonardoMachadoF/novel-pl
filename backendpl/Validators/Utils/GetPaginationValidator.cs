@@ -15,11 +15,12 @@ public class Pagination : IPagination
         Take = take;
         Skip = skip;
     }
+
     public int Take { get; set; }
     public int Skip { get; set; }
 }
 
-internal sealed class GetPaginationValidator:AbstractValidator<IPagination>
+public sealed class GetPaginationValidator : AbstractValidator<IPagination>
 {
     public GetPaginationValidator()
     {

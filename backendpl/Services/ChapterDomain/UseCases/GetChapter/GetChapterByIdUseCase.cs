@@ -3,15 +3,15 @@ using backend.Entities;
 
 namespace backend.Services.ChapterDomain.UseCases.GetChapter;
 
-public class GetChapterByIdUseCase:IGetChapterByIdUseCase
+public class GetChapterByIdUseCase : IGetChapterByIdUseCase
 {
     private readonly IChapterRepository _chapterRepository;
-    
+
     public GetChapterByIdUseCase(IChapterRepository chapterRepository)
     {
         _chapterRepository = chapterRepository;
     }
-    
+
     public async Task<Chapter> Execute(Guid id)
     {
         var chapter = await _chapterRepository.GetChapterById(id);
@@ -20,8 +20,7 @@ public class GetChapterByIdUseCase:IGetChapterByIdUseCase
         {
             throw new Exception("Chapter not found");
         }
-        
+
         return chapter;
     }
 }
-

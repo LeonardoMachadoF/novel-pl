@@ -2,7 +2,7 @@ using FluentValidation.Results;
 
 namespace backend.Services.ErrorService;
 
-public class ErrorService: IErrorService
+public class ErrorService : IErrorService
 {
     public Dictionary<string, IEnumerable<string>> SanitazeError(IEnumerable<ValidationFailure> errors)
     {
@@ -12,7 +12,7 @@ public class ErrorService: IErrorService
                 err => err.Key,
                 err => err.Select(e => e.ErrorMessage)
             );
-        
+
         return sanitazedErros;
     }
 }

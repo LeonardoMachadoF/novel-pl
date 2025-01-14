@@ -5,7 +5,7 @@ using Moq;
 
 namespace backendtests.UseCases;
 
-public class CreateUserUseCaseTests: TestBase
+public class CreateUserUseCaseTests : TestBase
 {
     private CreateUserDto CreateValidUserDto(string email, string username, string password)
     {
@@ -34,14 +34,17 @@ public class CreateUserUseCaseTests: TestBase
         Assert.NotNull(result);
         Assert.Equal(validUserDto.Email, result.Email);
         Assert.Equal(validUserDto.Username, result.Username);
-        MockUserRepository.Verify(repo => repo.Add(It.Is<User>(user => user.Email == validUserDto.Email && user.Username == validUserDto.Username)), Times.Once);
+        MockUserRepository.Verify(
+            repo => repo.Add(It.Is<User>(user =>
+                user.Email == validUserDto.Email && user.Username == validUserDto.Username)), Times.Once);
     }
 
     [Fact]
     public async Task Execute_ShouldThrowException_WhenEmailAlreadyExists()
     {
         var validUserDto = CreateValidUserDto("existinguser@email.com", "newuser", "password123");
-        var existingUser = new User { Email = "existinguser@email.com", Username = "existinguser", Password = "hashedPassword" };
+        var existingUser = new User
+            { Email = "existinguser@email.com", Username = "existinguser", Password = "hashedPassword" };
 
         MockValidationService.Setup(v => v.Validate(It.IsAny<CreateUserDto>()));
         MockUserRepository.Setup(repo => repo.FindUserByEmailOrUsermail(validUserDto.Email, validUserDto.Username))

@@ -15,7 +15,7 @@ public abstract class TestBase
             Volume = 1,
             Content = "chapter content"
         };
-    
+
     protected UpdateChapterDto GetUpdateChapterDto()
     {
         return new UpdateChapterDto
@@ -26,7 +26,7 @@ public abstract class TestBase
             Content = "New content"
         };
     }
-    
+
     protected Novel CreateNovel(string slug) =>
         new Novel(
             "titulo",

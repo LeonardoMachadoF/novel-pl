@@ -17,8 +17,8 @@ public static class NovelRoute
             {
                 var novel = await createNovelUseCase.Execute(novelDto);
                 return Results.Created($"/novel/{novel.Id}", novel);
-            });
-        
+            }).RequireAuthorization("Admin");
+
         group.MapGet("/{slug}", async (IGetNovelUseCase getNovel, string slug) =>
         {
             var novel = Guid.TryParse(slug, out Guid novelId)
@@ -39,13 +39,13 @@ public static class NovelRoute
             {
                 var novel = await updateNovelUseCase.Execute(slug, novelUpdateDto);
                 return Results.Ok(novel);
-            });
+            }).RequireAuthorization("Admin");
 
         group.MapDelete("/{id}", async (Guid id, IDeleteNovelUseCase deleteNovelUseCase) =>
         {
             await deleteNovelUseCase.Execute(id);
             return Results.Ok();
-        });
+        }).RequireAuthorization("Admin");
 
         return group;
     }
