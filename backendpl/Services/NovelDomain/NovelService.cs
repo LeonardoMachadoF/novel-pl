@@ -16,11 +16,9 @@ public static class NovelService
         services.AddScoped<IDeleteNovelUseCase, DeleteNovelUseCase>();
         services.AddScoped<IGetNovelsUseCase, GetNovelsUseCase>();
         services.AddScoped<IGetNovelUseCase, GetNovelUseCase>();
-        // services.AddScoped<IGetNovelBySlugUseCase, GetNovelBySlugUseCase>();
         services.AddScoped<IUpdateNovelUseCase, UpdateNovelUseCase>();
         services.AddScoped<IAddToFavoriteUseCase, AddToFavoriteUseCase>();
 
         return services;
     }
 }
-

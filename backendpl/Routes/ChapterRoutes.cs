@@ -17,7 +17,7 @@ public static class ChapterRoute
                 chapterDto.NovelSlug = slug;
                 var chapter = await createChapterUseCase.Execute(chapterDto);
                 return Results.Created($"/chapter/{chapter.Id}", chapter);
-            });
+            }).RequireAuthorization("Admin");
 
         group.MapGet("/{id:guid}", async (IGetChapterByIdUseCase getChapter, Guid id) =>
         {
@@ -36,14 +36,14 @@ public static class ChapterRoute
                 if (id == Guid.Empty) return Results.BadRequest();
                 var novel = await updateChapterUseCase.Execute(chapterDto, id);
                 return Results.Ok(novel);
-            });
+            }).RequireAuthorization("Admin");
 
         group.MapDelete("/{id}", async (IDeleteChapterUseCase deleteChapterUseCase, Guid id) =>
         {
             if (id == Guid.Empty) return Results.BadRequest();
             await deleteChapterUseCase.Execute(id);
             return Results.Ok();
-        });
+        }).RequireAuthorization("Admin");
 
         return group;
     }

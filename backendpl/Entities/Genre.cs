@@ -6,11 +6,11 @@ public class Genre
     {
         Id = Guid.NewGuid();
         Name = name;
-        Slug = Guid.NewGuid().ToString("N").Substring(0,6);
+        Slug = Guid.NewGuid().ToString("N").Substring(0, 6);
         Description = description;
         CreatedDate = DateTime.UtcNow;
     }
-    
+
     public Guid Id { get; set; }
     public string Name { get; set; }
     public string? Slug { get; set; }
@@ -18,7 +18,7 @@ public class Genre
     public int ViewCount { get; set; } = 0;
     public int LikeCount { get; set; } = 0;
     public DateTime CreatedDate { get; set; }
-    
+
     public List<Guid> NovelIds { get; set; }
     public List<Novel> Novels { get; set; }
 }

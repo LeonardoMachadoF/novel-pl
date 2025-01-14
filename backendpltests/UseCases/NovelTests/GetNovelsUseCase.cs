@@ -8,10 +8,11 @@ using Moq;
 
 namespace backend_pl_tests.UseCases.AuthNovel;
 
-public class GetNovelsUseCaseTests: NovelBaseTest
+public class GetNovelsUseCaseTests : NovelBaseTest
 {
     private readonly Mock<IValidationBehavior<IPagination>> _mockValidator = new();
     private readonly GetNovelsUseCase _getNovelsUseCase;
+
     public GetNovelsUseCaseTests()
     {
         _getNovelsUseCase = new GetNovelsUseCase(_novelRepository.Object, _mockValidator.Object);
@@ -32,10 +33,10 @@ public class GetNovelsUseCaseTests: NovelBaseTest
 
 
         var result = await _getNovelsUseCase.Execute(2, 0);
-        
+
         Assert.NotNull(result);
-        Assert.IsType<List<Novel>>(result); 
-        Assert.Equal(expectedNovels.Count, result.Count); 
+        Assert.IsType<List<Novel>>(result);
+        Assert.Equal(expectedNovels.Count, result.Count);
 
         for (int i = 0; i < expectedNovels.Count; i++)
         {

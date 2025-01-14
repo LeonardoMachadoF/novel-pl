@@ -34,7 +34,7 @@ builder.Services.AddScoped<INovelRepository, NovelRepository>();
 builder.Services.AddScoped<IChapterRepository, ChapterRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddSingleton<IErrorService, ErrorService>();
-builder.Services.AddSingleton<ITokenGenerator,TokenGenerator>();
+builder.Services.AddSingleton<ITokenGenerator, TokenGenerator>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(x =>
@@ -63,9 +63,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI(opts =>
     {
         opts.SwaggerEndpoint(
-            "/openapi/v1.json", 
+            "/openapi/v1.json",
             "Demo"
-            );
+        );
     });
 }
 
@@ -80,4 +80,4 @@ app.MapGroup("/auth").AuthRoutes().WithTags("Auth");
 app.MapGroup("/novel").NovelRoutes().WithTags("Novel");
 app.MapGroup("/{slug}/chapter").ChapterRoutes().WithTags("Chapter");
 
-app.Run(); 
+app.Run();

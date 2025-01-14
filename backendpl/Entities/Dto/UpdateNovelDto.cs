@@ -8,6 +8,6 @@ public class UpdateNovelDto
     public string? Description { get; set; } = string.Empty;
 
     public NovelOriginalLanguage? OriginalLanguage { get; set; }
-    
+
     public string? ImageUrl { get; set; } = string.Empty;
 }

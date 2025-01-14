@@ -4,5 +4,5 @@ namespace backend.Services.ErrorService;
 
 public interface IErrorService
 {
-    public Dictionary<string,IEnumerable<string>> SanitazeError( IEnumerable<ValidationFailure> errors);
+    public Dictionary<string, IEnumerable<string>> SanitazeError(IEnumerable<ValidationFailure> errors);
 }

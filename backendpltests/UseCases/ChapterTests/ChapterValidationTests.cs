@@ -18,18 +18,20 @@ public class ChapterValidationTests
         _mockErrorService = new Mock<IErrorService>();
         _createChapterValidator = new CreateChapterValidator();
         _updateChapterValidator = new UpdateChapterValidator();
-        _validationUpdateChapterBehavior = new ValidationBehavior<UpdateChapterDto>(_updateChapterValidator, _mockErrorService.Object);
-        _validationCreateChapterBehavior = new ValidationBehavior<CreateChapterDto>(_createChapterValidator, _mockErrorService.Object);
-    
+        _validationUpdateChapterBehavior =
+            new ValidationBehavior<UpdateChapterDto>(_updateChapterValidator, _mockErrorService.Object);
+        _validationCreateChapterBehavior =
+            new ValidationBehavior<CreateChapterDto>(_createChapterValidator, _mockErrorService.Object);
     }
 
     [Theory]
-    [InlineData("", "Conteúdo válido", 1, 1, "novel-slug")] 
-    [InlineData("Título válido", "", 1, 1, "novel-slug")] 
-    [InlineData("Título válido", "Conteúdo válido", -1, 1, "novel-slug")] 
-    [InlineData("Título válido", "Conteúdo válido", 1, 0, "novel-slug")] 
-    [InlineData("Título válido", "Conteúdo válido", 1, 1, "")] 
-    public void ValidateCreate_ShouldThrowException_WhenInvalidInput(string title, string content, int number, int volume, string novelSlug)
+    [InlineData("", "Conteúdo válido", 1, 1, "novel-slug")]
+    [InlineData("Título válido", "", 1, 1, "novel-slug")]
+    [InlineData("Título válido", "Conteúdo válido", -1, 1, "novel-slug")]
+    [InlineData("Título válido", "Conteúdo válido", 1, 0, "novel-slug")]
+    [InlineData("Título válido", "Conteúdo válido", 1, 1, "")]
+    public void ValidateCreate_ShouldThrowException_WhenInvalidInput(string title, string content, int number,
+        int volume, string novelSlug)
     {
         var invalidChapter = new CreateChapterDto
         {
@@ -40,7 +42,8 @@ public class ChapterValidationTests
             NovelSlug = novelSlug
         };
 
-        var exception = Assert.Throws<ErrorCustomException>(() => _validationCreateChapterBehavior.Validate(invalidChapter));
+        var exception =
+            Assert.Throws<ErrorCustomException>(() => _validationCreateChapterBehavior.Validate(invalidChapter));
         Assert.NotNull(exception);
     }
 
@@ -60,10 +63,13 @@ public class ChapterValidationTests
     }
 
     [Theory]
-    [InlineData(null, null, null, null)] 
-    [InlineData("", "20- caracteres", null, null)] 
-    [InlineData("abcdeabedeabcdeabedeabcdeabedeabcdeabedeabcdeabedeabcdeabedeabcdeabedeabcdeabedeabcdeabedeabcdeabedeabcdeabedeabcdeabedeabcdeabedeabcdeabedeabcdeabedeabcdeabedeabcdeabedeabcdeabedeabcdeabedeabcdeabedeabcdeabedeabcdeabedeabcdeabede", null, null, null)] 
-    public void ValidateUpdate_ShouldThrowException_WhenInvalidInput(string title, string content, int? number, int? volume)
+    [InlineData(null, null, null, null)]
+    [InlineData("", "20- caracteres", null, null)]
+    [InlineData(
+        "abcdeabedeabcdeabedeabcdeabedeabcdeabedeabcdeabedeabcdeabedeabcdeabedeabcdeabedeabcdeabedeabcdeabedeabcdeabedeabcdeabedeabcdeabedeabcdeabedeabcdeabedeabcdeabedeabcdeabedeabcdeabedeabcdeabedeabcdeabedeabcdeabedeabcdeabedeabcdeabede",
+        null, null, null)]
+    public void ValidateUpdate_ShouldThrowException_WhenInvalidInput(string title, string content, int? number,
+        int? volume)
     {
         var invalidChapter = new UpdateChapterDto
         {
@@ -73,7 +79,8 @@ public class ChapterValidationTests
             Volume = volume
         };
 
-        var exception = Assert.Throws<ErrorCustomException>(() => _validationUpdateChapterBehavior.Validate(invalidChapter));
+        var exception =
+            Assert.Throws<ErrorCustomException>(() => _validationUpdateChapterBehavior.Validate(invalidChapter));
         Assert.NotNull(exception);
     }
 

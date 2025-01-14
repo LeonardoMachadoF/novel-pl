@@ -4,7 +4,7 @@ using FluentValidation;
 
 namespace backend.Validators;
 
-public sealed class UpdateNovelValidator:AbstractValidator<UpdateNovelDto>
+public sealed class UpdateNovelValidator : AbstractValidator<UpdateNovelDto>
 {
     public UpdateNovelValidator()
     {
@@ -18,13 +18,15 @@ public sealed class UpdateNovelValidator:AbstractValidator<UpdateNovelDto>
         RuleFor(x => x.OriginalLanguage)
             .IsInEnum().WithMessage("Invalid language selected.");
         RuleFor(x => x.ImageUrl)
-            .Matches(@"^(https?://)?(www\.)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,6}(/[\w-]*)*").WithMessage("Invalid Image URL format.")
+            .Matches(@"^(https?://)?(www\.)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,6}(/[\w-]*)*")
+            .WithMessage("Invalid Image URL format.")
             .When(x => !string.IsNullOrEmpty(x.ImageUrl))
             .WithMessage("Invalid Image URL format.");
-        
-        RuleFor(x=>x)
-            .Must(x => !string.IsNullOrEmpty(x.Title) || !string.IsNullOrEmpty(x.Description) || !string.IsNullOrEmpty(x.ImageUrl) || Enum.IsDefined(typeof(NovelOriginalLanguage), x.OriginalLanguage))
-            .WithMessage("Pelo menos um dos campos deve estar preenchido.");
 
+        RuleFor(x => x)
+            .Must(x => !string.IsNullOrEmpty(x.Title) || !string.IsNullOrEmpty(x.Description) ||
+                       !string.IsNullOrEmpty(x.ImageUrl) ||
+                       Enum.IsDefined(typeof(NovelOriginalLanguage), x.OriginalLanguage))
+            .WithMessage("Pelo menos um dos campos deve estar preenchido.");
     }
 }

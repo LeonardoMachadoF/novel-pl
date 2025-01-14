@@ -42,14 +42,14 @@ public class NovelValidationTests
             Description = description,
             OriginalLanguage = originalLanguage
         };
-        
+
         var exception = Assert
             .Throws<ErrorCustomException>(
                 () => _validationCreateNovelBehavior.Validate(invalidNovelDto)
             );
         Assert.NotNull(exception);
     }
-    
+
     [Fact]
     public void Validade_ShouldNotThrowValidationException_WhenCreateNovelIsValid()
     {
@@ -59,13 +59,13 @@ public class NovelValidationTests
             Description = "This is a valid description.",
             OriginalLanguage = NovelOriginalLanguage.English
         };
-        
+
         var result = Record.Exception(() =>
             _validationCreateNovelBehavior.Validate(validNovelDto));
 
         Assert.Null(result);
     }
-    
+
     [Theory]
     [InlineData("", "", (NovelOriginalLanguage)55)]
     public void Validade_ShouldThrowValidationException_WhenUpdateNovelIsInvalid(
@@ -83,7 +83,7 @@ public class NovelValidationTests
 
         Assert.NotNull(exception);
     }
-    
+
     [Theory]
     [InlineData("hfghfgh", "", null)]
     [InlineData("", "fhghfghghegfhddfghfdghfd", null)]

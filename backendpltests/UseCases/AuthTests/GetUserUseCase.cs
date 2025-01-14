@@ -5,7 +5,7 @@ using Moq;
 
 namespace backendtests.UseCases;
 
-public class GetUserUseCaseTests: TestBase
+public class GetUserUseCaseTests : TestBase
 {
     [Fact]
     public async Task Execute_ShouldReturnUser_WhenUserExists()
@@ -17,24 +17,24 @@ public class GetUserUseCaseTests: TestBase
             Username = "daisjdasdas",
             Password = "dasihjdas"
         };
-        MockUserRepository.Setup(repo=>repo.FindUserInfo("daisjdasdas")).ReturnsAsync(existingUser);
-        
+        MockUserRepository.Setup(repo => repo.FindUserInfo("daisjdasdas")).ReturnsAsync(existingUser);
+
         var getUserUseCase = new GetUserUseCase(MockUserRepository.Object);
         var result = await getUserUseCase.Execute(username);
-        
+
         Assert.NotNull(result);
         Assert.Equal(existingUser.Username, result.Username);
         Assert.Equal(existingUser.Email, result.Email);
-        MockUserRepository.Verify(repo=>repo.FindUserInfo("daisjdasdas"), Times.Once);
+        MockUserRepository.Verify(repo => repo.FindUserInfo("daisjdasdas"), Times.Once);
     }
-    
+
     [Fact]
     public async Task Execute_ShouldReturnNull_WhenUserDoesNotExist()
     {
         var username = "naoexistente";
         MockUserRepository.Setup(repo => repo.FindUserInfo(username)).ReturnsAsync((User)null);
-        
-        
+
+
         var useCase = new GetUserUseCase(MockUserRepository.Object);
         var result = await useCase.Execute(username);
 

@@ -7,10 +7,10 @@ using Moq;
 
 namespace backendtests.UseCases;
 
-public class LoginUseCaseTests: TestBase
+public class LoginUseCaseTests : TestBase
 {
     private readonly PasswordHasher<User> _passwordHasher = new();
-    
+
     private User CreateUser(string username, string password) => new()
     {
         Username = username,
@@ -50,9 +50,9 @@ public class LoginUseCaseTests: TestBase
             .Setup(repo => repo.FindUserByEmailOrUsermail(It.IsAny<string>(), username))
             .ReturnsAsync(existentUser);
         var useCase = new LoginUseCase(MockUserRepository.Object, MockTokenGenerator.Object);
-        
+
         var result = await useCase.Execute(username, invalidPassword);
-        
+
         Assert.Equal("", result);
         MockUserRepository.Verify(repo => repo.FindUserByEmailOrUsermail(It.IsAny<string>(), username), Times.Once);
     }
@@ -63,7 +63,7 @@ public class LoginUseCaseTests: TestBase
         const string username = "validusername";
         const string password = "validpassword";
         const string expectedToken = "generated_token";
-        
+
         var user = CreateUser(username, password);
         MockUserRepository
             .Setup(repo => repo.FindUserByEmailOrUsermail(It.IsAny<string>(), username))
@@ -71,11 +71,11 @@ public class LoginUseCaseTests: TestBase
         MockTokenGenerator
             .Setup(gen => gen.GenerateToken(user))
             .Returns(expectedToken);
-        
+
         var useCase = new LoginUseCase(MockUserRepository.Object, MockTokenGenerator.Object);
-        
+
         var result = await useCase.Execute(username, password);
-        
+
         Assert.NotNull(result);
         Assert.Equal(expectedToken, result);
         MockUserRepository.Verify(repo => repo.FindUserByEmailOrUsermail(It.IsAny<string>(), username), Times.Once);

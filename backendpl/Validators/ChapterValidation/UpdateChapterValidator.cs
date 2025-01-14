@@ -3,12 +3,13 @@ using FluentValidation;
 
 namespace backend.Validators;
 
-public sealed class UpdateChapterValidator: AbstractValidator<UpdateChapterDto>
+public sealed class UpdateChapterValidator : AbstractValidator<UpdateChapterDto>
 {
     public UpdateChapterValidator()
     {
         RuleFor(x => x)
-            .Must(x => !string.IsNullOrEmpty(x.Title) || !string.IsNullOrEmpty(x.Content) || x.Number.HasValue || x.Volume.HasValue)
+            .Must(x => !string.IsNullOrEmpty(x.Title) || !string.IsNullOrEmpty(x.Content) || x.Number.HasValue ||
+                       x.Volume.HasValue)
             .WithMessage("At least one of Title, Content, Number, or Volume must be provided.");
 
         // Optional validation for Title and Content (if provided)

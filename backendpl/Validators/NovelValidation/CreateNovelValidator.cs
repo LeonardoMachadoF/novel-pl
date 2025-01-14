@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace backend.Validators;
 
-public sealed class CreateNovelValidator: AbstractValidator<CreateNovelDto>
+public sealed class CreateNovelValidator : AbstractValidator<CreateNovelDto>
 {
     public CreateNovelValidator()
     {
@@ -17,7 +17,8 @@ public sealed class CreateNovelValidator: AbstractValidator<CreateNovelDto>
         RuleFor(x => x.OriginalLanguage)
             .IsInEnum().WithMessage("Invalid language selected.");
         RuleFor(x => x.ImageUrl)
-            .Matches(@"^(https?://)?(www\.)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,6}(/[\w-]*)*").WithMessage("Invalid Image URL format.")
+            .Matches(@"^(https?://)?(www\.)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,6}(/[\w-]*)*")
+            .WithMessage("Invalid Image URL format.")
             .When(x => !string.IsNullOrEmpty(x.ImageUrl))
             .WithMessage("Invalid Image URL format.");
     }
