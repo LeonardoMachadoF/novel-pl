@@ -4,5 +4,5 @@ namespace backend.Services.ChapterDomain.UseCases.GetChapter;
 
 public interface IGetChapterByIdUseCase
 {
-    Task<Chapter> Execute(Guid id);
+    Task<Chapter?> Execute(Guid id);
 }

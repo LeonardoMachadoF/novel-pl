@@ -3,18 +3,11 @@ using backend.Entities;
 
 namespace backend.Services.ChapterDomain.UseCases.GetChapter;
 
-public class GetChapterByIdUseCase : IGetChapterByIdUseCase
+public class GetChapterByIdUseCase(IChapterRepository chapterRepository) : IGetChapterByIdUseCase
 {
-    private readonly IChapterRepository _chapterRepository;
-
-    public GetChapterByIdUseCase(IChapterRepository chapterRepository)
+    public async Task<Chapter?> Execute(Guid id)
     {
-        _chapterRepository = chapterRepository;
-    }
-
-    public async Task<Chapter> Execute(Guid id)
-    {
-        var chapter = await _chapterRepository.GetChapterById(id);
+        var chapter = await chapterRepository.GetChapterById(id);
 
         if (chapter is null)
         {

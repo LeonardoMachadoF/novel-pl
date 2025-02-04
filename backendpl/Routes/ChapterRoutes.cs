@@ -18,27 +18,21 @@ public static class ChapterRoute
                 var chapter = await createChapterUseCase.Execute(chapterDto);
                 return Results.Created($"/chapter/{chapter.Id}", chapter);
             }).RequireAuthorization("Admin");
-
+        
         group.MapGet("/{id:guid}", async (IGetChapterByIdUseCase getChapter, Guid id) =>
         {
-            if (id == Guid.Empty)
-            {
-                return Results.NotFound();
-            }
-
             var chapter = await getChapter.Execute(id);
-            return Results.Ok(chapter);
+            return chapter is not null ? Results.Ok(chapter) : Results.NotFound();
         });
 
-        group.MapPut("/{id}",
+        group.MapPut("/{id:guid}",
             async (IUpdateChapterUseCase updateChapterUseCase, UpdateChapterDto chapterDto, Guid id) =>
             {
-                if (id == Guid.Empty) return Results.BadRequest();
                 var novel = await updateChapterUseCase.Execute(chapterDto, id);
                 return Results.Ok(novel);
             }).RequireAuthorization("Admin");
 
-        group.MapDelete("/{id}", async (IDeleteChapterUseCase deleteChapterUseCase, Guid id) =>
+        group.MapDelete("/{id:guid}", async (IDeleteChapterUseCase deleteChapterUseCase, Guid id) =>
         {
             if (id == Guid.Empty) return Results.BadRequest();
             await deleteChapterUseCase.Execute(id);

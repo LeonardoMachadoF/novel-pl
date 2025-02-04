@@ -38,12 +38,27 @@ public class GlobalExceptionHandlingMiddleware : IMiddleware
 
             await context.Response.WriteAsync(json);
         }
+        catch (InvalidOperationException ex)
+        {
+            context.Response.ContentType = "application/json";
+            context.Response.StatusCode = (int)HttpStatusCode.Conflict;
+            ProblemDetails problem = new()
+            {
+                Status = (int)HttpStatusCode.Conflict,
+                Type = "Conflict",
+                Title = "Invalid Operation",
+                Detail = ex.Message,
+            };
+
+            var json = JsonSerializer.Serialize(problem);
+            await context.Response.WriteAsync(json);
+        }
         catch (Exception e)
         {
             _logger.LogError(e, e.Message);
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 
-            ProblemDetails probem = new()
+            ProblemDetails problem = new()
             {
                 Status = (int)HttpStatusCode.InternalServerError,
                 Type = "Server error",
@@ -51,7 +66,7 @@ public class GlobalExceptionHandlingMiddleware : IMiddleware
                 Detail = "Server error occured.",
             };
 
-            var json = JsonSerializer.Serialize(probem);
+            var json = JsonSerializer.Serialize(problem);
             context.Response.ContentType = "application/json";
 
             await context.Response.WriteAsync(json);

@@ -27,7 +27,7 @@ public class CreateUserUseCase : ICreateUserUseCase
 
         if (existentUser != null)
         {
-            throw new Exception("User already existed");
+            throw new InvalidOperationException("User already exists.");
         }
 
         var newUser = new User()

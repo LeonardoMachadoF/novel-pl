@@ -52,8 +52,8 @@ public class CreateUserUseCaseTests : TestBase
 
         var useCase = new CreateUserUseCase(MockValidationService.Object, MockUserRepository.Object);
 
-        var exception = await Assert.ThrowsAsync<Exception>(() => useCase.Execute(validUserDto));
-        Assert.Equal("User already existed", exception.Message);
+        var exception = await Assert.ThrowsAsync<InvalidOperationException>(() => useCase.Execute(validUserDto));
+        Assert.Equal("User already exists.", exception.Message);
         MockUserRepository.Verify(repo => repo.Add(It.IsAny<User>()), Times.Never);
     }
 }
